@@ -63,7 +63,7 @@ loop-closed/
 
 **Option A — install script (recommended):**
 ```bash
-git clone https://github.com/fabifirpo/loop-closed
+git clone https://github.com/marpla78/loop-closed
 cd loop-closed
 bash install.sh
 ```

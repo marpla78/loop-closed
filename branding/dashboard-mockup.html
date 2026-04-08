@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>LOOP_CLOSED | Elite Momentum Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Inter:wght@400;500;600&amp;family=Manrope:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "background": "#26022e",
+                        "outline": "#9b8c9b",
+                        "on-background": "#ffd5ff",
+                        "on-primary-fixed": "#330044",
+                        "surface-container-highest": "#4c2652",
+                        "on-primary-fixed-variant": "#6f2287",
+                        "on-tertiary-fixed-variant": "#00513c",
+                        "on-error-container": "#ffdad6",
+                        "error": "#ffb4ab",
+                        "surface-container-high": "#401a47",
+                        "primary-fixed": "#fbd7ff",
+                        "primary-fixed-dim": "#f0b0ff",
+                        "on-primary": "#54006d",
+                        "secondary-container": "#c98112",
+                        "on-tertiary-fixed": "#002116",
+                        "on-tertiary-container": "#00503b",
+                        "on-surface": "#ffd5ff",
+                        "secondary-fixed-dim": "#ffb961",
+                        "tertiary-fixed": "#36ffc4",
+                        "surface": "#26022e",
+                        "secondary-fixed": "#ffddb9",
+                        "primary": "#f4bdff",
+                        "surface-bright": "#512a57",
+                        "tertiary": "#00ebb3",
+                        "surface-container": "#340f3b",
+                        "on-surface-variant": "#d2c2d1",
+                        "inverse-surface": "#ffd5ff",
+                        "outline-variant": "#4e4350",
+                        "surface-tint": "#f0b0ff",
+                        "primary-container": "#e894ff",
+                        "surface-container-low": "#300a37",
+                        "tertiary-fixed-dim": "#00e1ab",
+                        "inverse-primary": "#893da1",
+                        "inverse-on-surface": "#47214d",
+                        "on-primary-container": "#6d2186",
+                        "surface-container-lowest": "#1f0027",
+                        "surface-variant": "#4c2652",
+                        "on-tertiary": "#003828",
+                        "tertiary-container": "#00cc9b",
+                        "secondary": "#ffb961",
+                        "on-secondary": "#472a00",
+                        "error-container": "#93000a",
+                        "on-error": "#690005",
+                        "surface-dim": "#26022e",
+                        "on-secondary-container": "#3e2400",
+                        "on-secondary-fixed-variant": "#663e00",
+                        "on-secondary-fixed": "#2b1700"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "fontFamily": {
+                        "headline": ["Space Grotesk"],
+                        "body": ["Inter"],
+                        "label": ["Manrope"]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; background-color: #26022e; color: #ffd5ff; }
+        .font-headline { font-family: 'Space Grotesk', sans-serif; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="flex flex-col min-h-screen">
+<!-- TopAppBar -->
+<header class="bg-[#26022e] dark:bg-[#26022e] flex justify-between items-center px-6 h-20 w-full docked full-width top-0 z-40">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-purple-300 dark:text-purple-300">terminal</span>
+<span class="text-2xl font-black italic tracking-widest text-[#f4bdff] font-['Space_Grotesk'] uppercase">LOOP_CLOSED</span>
+</div>
+<div class="flex items-center gap-4">
+<span class="font-['Space_Grotesk'] font-bold tracking-tighter uppercase text-purple-300 dark:text-purple-300 text-sm hidden md:block">ELITE MOMENTUM</span>
+<div class="w-10 h-10 rounded-full bg-surface-container-highest overflow-hidden border border-primary/20">
+<img alt="User Profile" data-alt="Close up high-contrast studio portrait of a professional athlete with dramatic purple backlighting and deep shadows" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAd-OWCJdqbJN8xGbWgdYfgPfFDaTB-SqRimY02n06doTCVVwr_AaqLSqhfwnWtxtssqX-ceJ1CV0Gxq0evChf54svm-NYc892IiEDso6MlqXrP0XKhTVaGBUM9b1bpMClrDWELtbYH3rQtfmIYGOEBGYWNI4HbtbgTqMBBZFxpcnBH-BAkPoNvkijaRZjP-DH4dfqJzko0WIRDsj7S8ZYdj3ewbN2PZPzdLiesivbR4l0N-uXAIlIuqg3fW-8kG9a97lHkTg2LjiM"/>
+</div>
+</div>
+</header>
+<main class="flex-grow px-6 pt-4 pb-32 max-w-screen-xl mx-auto w-full space-y-12">
+<!-- Hero Branding Section -->
+<section class="relative overflow-hidden bg-surface-container-lowest p-8 min-h-[300px] flex flex-col justify-end">
+<div class="absolute top-0 right-0 w-2/3 h-full opacity-40">
+<img class="w-full h-full object-cover" data-alt="Futuristic cybernetic interface with glowing purple lines and abstract geometric patterns in a dark environment" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCRZbCg9sRXpfnlcxtV95UoUXUC4D_-itdPRwPCLRf6-hDVkckRpHmDPgRfiTU5o069Uzw0a-7R9pDbOwUktrLODuwagcSK2VLUqf1nWGRuXZMvdZp63wLnEDOeewAlfFq_465fIiqnfA4Z7iIyP6WCmv0JG-rAWSL3EgjkwJe7AtNKLGOLs1wVTJJaBFyVY50by42ljMv95XBiaLEaaANV_5bRLb6Jg3ZSZWdghRFTAXh3tKXn8wWYYC0CQ6umjtaMdSzHjG1ofnM"/>
+</div>
+<div class="relative z-10">
+<p class="font-label text-tertiary font-bold tracking-[0.3em] text-xs mb-2">SYSTEM STATUS: ACTIVE</p>
+<h1 class="font-headline font-bold text-6xl md:text-8xl leading-none tracking-tighter text-on-background">
+                    ELITE<br/><span class="text-primary-container">MOMENTUM</span>
+</h1>
+<div class="mt-6 flex gap-4">
+<div class="bg-secondary px-6 py-2 text-on-secondary font-headline font-bold text-sm tracking-widest hover:bg-secondary-fixed transition-colors cursor-pointer">
+                        INITIALIZE_SEQUENCE
+                    </div>
+</div>
+</div>
+</section>
+<!-- Color Matrix & Typography Grid (Bento Style) -->
+<section class="grid grid-cols-1 md:grid-cols-12 gap-6">
+<!-- Typography Matrix -->
+<div class="md:col-span-7 bg-surface-container-low p-8 space-y-8">
+<h2 class="font-label text-outline text-xs tracking-widest uppercase mb-4">Typography_Hierarchy</h2>
+<div class="space-y-6">
+<div>
+<p class="font-label text-[10px] text-primary/40 mb-1">DISPLAY_BOLD</p>
+<h3 class="font-headline font-bold text-5xl text-on-background">KINETIC</h3>
+</div>
+<div>
+<p class="font-label text-[10px] text-primary/40 mb-1">DISPLAY_MEDIUM</p>
+<h3 class="font-headline font-medium text-4xl text-on-surface">Precision_Control</h3>
+</div>
+<div>
+<p class="font-label text-[10px] text-primary/40 mb-1">BODY_INTER</p>
+<p class="font-body text-lg text-on-surface-variant leading-relaxed max-w-md">
+                            High-velocity editorial systems designed for professional performance and elite digital impact.
+                        </p>
+</div>
+</div>
+</div>
+<!-- Color Matrix -->
+<div class="md:col-span-5 bg-surface-container-high p-8">
+<h2 class="font-label text-outline text-xs tracking-widest uppercase mb-6">Color_Matrix.exe</h2>
+<div class="grid grid-cols-2 gap-4">
+<div class="aspect-square bg-primary-container p-4 flex flex-col justify-end">
+<span class="text-on-primary-container font-headline font-bold text-xs">PRIMARY_CONTAINER</span>
+<span class="text-on-primary-container font-label text-[10px] opacity-70">#E894FF</span>
+</div>
+<div class="aspect-square bg-secondary p-4 flex flex-col justify-end">
+<span class="text-on-secondary font-headline font-bold text-xs">SECONDARY_CORE</span>
+<span class="text-on-secondary font-label text-[10px] opacity-70">#FFB961</span>
+</div>
+<div class="aspect-square bg-tertiary p-4 flex flex-col justify-end">
+<span class="text-on-tertiary font-headline font-bold text-xs">TERTIARY_NEON</span>
+<span class="text-on-tertiary font-label text-[10px] opacity-70">#00EBB3</span>
+</div>
+<div class="aspect-square bg-surface-container-lowest p-4 flex flex-col justify-end border border-white/5">
+<span class="text-on-surface font-headline font-bold text-xs">DEEP_PLUM</span>
+<span class="text-on-surface font-label text-[10px] opacity-70">#1F0027</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Functional Triggers -->
+<section class="space-y-6">
+<div class="flex items-end justify-between border-b border-primary/10 pb-4">
+<h2 class="font-headline font-bold text-3xl tracking-tighter uppercase">Functional_Triggers</h2>
+<span class="font-label text-[10px] text-tertiary tracking-widest uppercase">4 active nodes</span>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+<button class="group relative overflow-hidden bg-surface-container-high p-6 text-left transition-all hover:bg-primary/10 active:scale-95 duration-75">
+<span class="material-symbols-outlined text-primary mb-4 block">terminal</span>
+<span class="block font-headline font-bold text-lg tracking-tight mb-1 uppercase">EXECUTE_COMMAND</span>
+<span class="block font-label text-[10px] text-outline-variant uppercase">Run core protocols</span>
+</button>
+<button class="group relative overflow-hidden bg-surface-container-high p-6 text-left transition-all hover:bg-error/10 active:scale-95 duration-75">
+<span class="material-symbols-outlined text-error mb-4 block">power_settings_new</span>
+<span class="block font-headline font-bold text-lg tracking-tight mb-1 uppercase">SYSTEM_REBOOT</span>
+<span class="block font-label text-[10px] text-outline-variant uppercase">Hard reset nodes</span>
+</button>
+<button class="group relative overflow-hidden bg-surface-container-high p-6 text-left transition-all hover:bg-tertiary/10 active:scale-95 duration-75">
+<span class="material-symbols-outlined text-tertiary mb-4 block">bolt</span>
+<span class="block font-headline font-bold text-lg tracking-tight mb-1 uppercase">OVERDRIVE_MODE</span>
+<span class="block font-label text-[10px] text-outline-variant uppercase">Boost CPU cycles</span>
+</button>
+<button class="group relative overflow-hidden bg-surface-container-high p-6 text-left transition-all hover:bg-secondary/10 active:scale-95 duration-75">
+<span class="material-symbols-outlined text-secondary mb-4 block">security</span>
+<span class="block font-headline font-bold text-lg tracking-tight mb-1 uppercase">ENCRYPTION_LOCK</span>
+<span class="block font-label text-[10px] text-outline-variant uppercase">Seal database</span>
+</button>
+</div>
+</section>
+<!-- System Logs Terminal -->
+<section class="bg-[#1f0027] border border-white/5 overflow-hidden">
+<div class="flex items-center justify-between px-4 py-2 bg-white/5">
+<div class="flex gap-2">
+<div class="w-2 h-2 rounded-full bg-error/40"></div>
+<div class="w-2 h-2 rounded-full bg-secondary/40"></div>
+<div class="w-2 h-2 rounded-full bg-tertiary/40"></div>
+</div>
+<span class="font-label text-[10px] text-outline tracking-widest uppercase">System_Logs_v4.2.0</span>
+</div>
+<div class="p-6 font-['Space_Grotesk'] text-sm space-y-2 max-h-[300px] overflow-y-auto">
+<div class="flex gap-4">
+<span class="text-outline shrink-0">[14:20:01]</span>
+<span class="text-tertiary uppercase font-bold tracking-wider">SUCCESS</span>
+<span class="text-on-surface-variant">Kernel interface initialized at 0x4F92A</span>
+</div>
+<div class="flex gap-4">
+<span class="text-outline shrink-0">[14:20:04]</span>
+<span class="text-primary uppercase font-bold tracking-wider">INFO</span>
+<span class="text-on-surface-variant">LOOP_CLOSED protocol handshake complete.</span>
+</div>
+<div class="flex gap-4">
+<span class="text-outline shrink-0">[14:21:12]</span>
+<span class="text-secondary uppercase font-bold tracking-wider">WARN</span>
+<span class="text-on-surface-variant">Unusual latency detected on NODE_07 (74ms)</span>
+</div>
+<div class="flex gap-4">
+<span class="text-outline shrink-0">[14:22:30]</span>
+<span class="text-tertiary uppercase font-bold tracking-wider">SUCCESS</span>
+<span class="text-on-surface-variant">Momentum sync established across all clusters.</span>
+</div>
+<div class="flex gap-4">
+<span class="text-outline shrink-0">[14:23:45]</span>
+<span class="text-primary uppercase font-bold tracking-wider">INFO</span>
+<span class="text-on-surface-variant">Ready for EXECUTE_COMMAND trigger.</span>
+</div>
+<div class="mt-4 border-t border-white/5 pt-2 flex items-center gap-2">
+<span class="text-primary">_</span>
+<span class="animate-pulse text-primary">|</span>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 w-full z-50 flex justify-around items-center pb-safe bg-[#26022e]/80 backdrop-blur-xl border-t border-white/5 shadow-[0_-10px_40px_rgba(232,148,255,0.1)]">
+<a class="flex flex-col items-center justify-center bg-[#f4bdff] text-[#26022e] rounded-none p-3 w-full group active:translate-y-[-2px] transition-transform" href="#">
+<span class="material-symbols-outlined">grid_view</span>
+<span class="font-['Space_Grotesk'] text-[10px] font-bold tracking-[0.2em] uppercase">DASHBOARD</span>
+</a>
+<a class="flex flex-col items-center justify-center text-purple-200/40 p-3 w-full group hover:text-[#f4bdff] transition-all" href="#">
+<span class="material-symbols-outlined">terminal</span>
+<span class="font-['Space_Grotesk'] text-[10px] font-bold tracking-[0.2em] uppercase">LOGS</span>
+</a>
+<a class="flex flex-col items-center justify-center text-purple-200/40 p-3 w-full group hover:text-[#f4bdff] transition-all" href="#">
+<span class="material-symbols-outlined">bolt</span>
+<span class="font-['Space_Grotesk'] text-[10px] font-bold tracking-[0.2em] uppercase">TRIGGERS</span>
+</a>
+<a class="flex flex-col items-center justify-center text-purple-200/40 p-3 w-full group hover:text-[#f4bdff] transition-all" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-['Space_Grotesk'] text-[10px] font-bold tracking-[0.2em] uppercase">SYSTEM</span>
+</a>
+</nav>
+</body></html>

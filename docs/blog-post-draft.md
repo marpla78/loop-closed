@@ -70,7 +70,7 @@ The return on 5 minutes of maintenance is felt most on the Mondays after a compl
 
 ---
 
-The repo is at github.com/fabifirpo/loop-closed — fork it, make it yours. Takes 10 minutes to set up via the install script. Two weeks to feel different.
+The repo is at github.com/marpla78/loop-closed — fork it, make it yours. Takes 10 minutes to set up via the install script. Two weeks to feel different.
 
 What's inside: one constitutional file that tells Claude how to work, three behavioral rules that auto-load every session, a shared playbook template, and filled examples showing what it looks like after a month of real use.
 
