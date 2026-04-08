@@ -1,85 +1,148 @@
-# Design System Document
-
-## 1. Overview & Creative North Star: "The Kinetic Editorial"
-
-This design system is not a standard web interface; it is a high-octane, editorial experience designed to mirror the velocity and impact of professional athletics. Our Creative North Star is **"The Kinetic Editorial."** 
-
-We move beyond the "template" look by treating the screen as a dynamic canvas. The system rejects the comfort of centered, balanced grids in favor of intentional asymmetry, aggressive typography scales, and "breaking the frame" with imagery. This is an exclusive environment—professional yet disruptive—where bold color blocks and sharp angles communicate a sense of movement and elite status.
+# loop-closed — Design System
+## Elite Momentum Edition
 
 ---
 
-## 2. Colors: Tonal Depth & Vibrancy
+## 1. Creative North Star: "The Kinetic Editorial"
 
-The palette is anchored in deep, sophisticated purples, allowing vibrant neon accents to vibrate against dark surfaces.
+loop-closed is a precision tool with editorial energy. The visual identity
+combines developer-native roots with a high-contrast, high-velocity aesthetic.
+It should feel like a system built for elite performance — not a startup, not
+a corporate product, not an AI toy.
 
-### Core Palette
-- **Background (`#26022e`):** The foundation. A deep, saturated plum that feels more premium and intentional than pure black.
-- **Primary (`#f4bdff`) / Primary Container (`#e894ff`):** The electric purple signature. Use this for high-impact branding and focal points.
-- **Secondary (`#ffb961`):** A high-contrast orange for calls to action and navigational "hooks."
-- **Tertiary (`#00ebb3`):** A neon cyan/green reserved for success states, kinetic accents, or specific athlete-related callouts.
-
-### The "No-Line" Rule
-Standard 1px borders are strictly prohibited for sectioning. Structural boundaries must be defined solely through background color shifts. For example, a `surface-container-low` section sitting on a `background` provides all the definition required. We define space through mass, not lines.
-
-### Surface Hierarchy & Nesting
-Treat the UI as a series of physical layers. Use the `surface-container` tiers to create depth:
-- **Lowest Tier (`surface-container-lowest`):** Deepest "recessed" areas.
-- **Highest Tier (`surface-container-highest`):** The most "elevated" interactive surfaces.
-- **The Glass Rule:** For floating elements, use `surface` colors at 60-80% opacity with a `backdrop-blur` of 20px to 40px. This ensures the vibrant brand colors "bleed" through the interface, creating a sense of environmental integration.
+**The tension that drives everything:** terminal precision meets editorial boldness.
+The grid is intentionally asymmetric. The typography is aggressive. The color
+is deep and saturated. Every element should feel like it was placed with purpose.
 
 ---
 
-## 3. Typography: Authority Through Contrast
+## 2. Logo & Glyph-Mark
 
-The typography strategy relies on the tension between a massive, condensed display face and a technical, clean sans-serif.
+### The Icon
+A right-pointing arrow (`>`) — the terminal prompt — followed by a tight
+curved return stroke that loops back to its origin. The loop closes.
 
-- **Display & Headline (`spaceGrotesk` / Druk-inspired):** This is our "Voice." It should be used at scale. Don't be afraid to let a `display-lg` headline bleed off the edge of a container or overlap an image. It conveys power and exclusivity.
-- **Title & Body (`inter` / Neue Montreal-inspired):** These are for clarity and "The Fine Print." While headlines shout, the body text speaks with calm, professional authority.
-- **Label (`manrope`):** Used for metadata, small captions, and technical details.
+- **Concept:** feedback, recursion, the session that starts where the last one ended
+- **Stroke:** single-weight, high-contrast, no fill
+- **Color:** `#E894FF` on `#1F0027` (Deep Plum)
+- **Logo file:** `logo.png`
 
-**Hierarchy Note:** Use high contrast in size. If a headline is `display-lg`, the supporting text should be significantly smaller (`body-md`) to emphasize the editorial importance of the message.
+### Usage
+| Context | Size | Notes |
+|---------|------|-------|
+| GitHub README header | 80×80px | Dark background version |
+| GitHub social card | Embedded | See `github-cover.png` |
+| Favicon | 32×32 and 16×16px | Test at 16px — the mark holds |
+
+### What not to do
+- Don't add drop shadows or glows to the mark
+- Don't place on light backgrounds without testing contrast
+- Don't resize below 16px without testing legibility
 
 ---
 
-## 4. Elevation & Depth: Tonal Layering
+## 3. Color Palette
 
-We avoid traditional drop shadows in favor of **Tonal Layering**. Depth is a result of color proximity, not artificial lighting.
+| Role | Value | Usage |
+|------|-------|-------|
+| Background | `#1F0027` Deep Plum | Primary dark foundation |
+| Surface low | `#26022e` | Cards, recessed sections |
+| Surface high | `#3a0050` | Elevated interactive surfaces |
+| Accent / Action | `#E894FF` | CTAs, the glyph-mark, focus rings |
+| Neon / Success | `#00EBB3` | Active states, positive feedback |
+| Amber / Warning | `#FFB961` | Alerts, secondary actions |
+| Muted text | `#c4a0d0` | Captions, metadata |
+| Foreground | `#f0e4f7` | Primary text |
 
-- **The Layering Principle:** To lift a card, place a `surface-container-high` card onto a `surface-container-low` background. This creates a "soft lift" that feels architectural rather than digital.
-- **Ambient Shadows:** If a floating element (like a modal or high-priority CTA) requires a shadow, it must be an "Ambient Shadow." Use the `on-surface` color at 5% opacity with a blur radius of 40px+. Never use pure black shadows.
-- **The "Ghost Border" Fallback:** If accessibility requires a border, use the `outline-variant` at 15% opacity. It should be felt, not seen.
-- **Sharp Angles:** Use the `none` or `sm` (0.125rem) settings for most containers to maintain the "aggressive" athlete-driven aesthetic. Rounded corners (`xl`) are reserved only for specific "pill" elements like status chips.
+### The No-Line Rule
+Standard 1px borders are prohibited for sectioning. Define boundaries
+through background color shifts only. Space and mass replace lines.
+
+### Glass surfaces
+Floating elements: surface color at 60–80% opacity with `backdrop-blur: 20–40px`.
+The brand colors bleed through — this is intentional.
+
+### Ghost border (accessibility fallback)
+`outline-variant` at 15% opacity. It should be felt, not seen.
 
 ---
 
-## 5. Components
+## 4. Typography
+
+| Role | Font | Application |
+|------|------|-------------|
+| Display / Headline | **Space Grotesk** Bold | Large, commanding — often uppercase |
+| UI / Body | **Space Grotesk** Regular | Functional, high-legibility |
+| Code / Terminal | **JetBrains Mono** | All code samples and terminal output |
+
+### Rules
+- Display headlines: uppercase or title case for editorial impact
+- Size contrast is load-bearing — `display-lg` headline + `body-md` body
+- Let headlines bleed off container edges when it serves the layout
+- Wide tracking on display text (`letter-spacing: 0.05–0.1em`)
+- Left-align body text — centered layouts kill the energy
+
+---
+
+## 5. Elevation & Depth
+
+Depth through tonal layering, not shadows.
+
+- **Lift a card:** `surface-container-high` on `surface-container-low`
+- **Ambient shadow (floating only):** `on-surface` at 5% opacity, blur 40px+. Never pure black.
+- **Corner radius:** `none` or `2px` for containers. `9999px` for pill chips only.
+
+---
+
+## 6. Components
 
 ### Buttons
-- **Primary:** Bold `secondary` (Orange) or `primary` (Purple) backgrounds. Sharp corners (`none`). Typography should be uppercase `label-md` with heavy tracking.
-- **Tertiary/Ghost:** No background. Use a `secondary` or `white` text with a 1px "Ghost Border" (20% opacity).
+- **Primary:** `#E894FF` or `#FFB961` background. Sharp corners. Uppercase label, heavy tracking.
+- **Ghost:** No background. `#E894FF` or white text with 1px ghost border at 20% opacity.
 
-### Cards & Lists
-- **No Dividers:** Forbid the use of horizontal lines. Use vertical white space from the spacing scale or a shift from `surface-container-low` to `surface-container-high`.
-- **Dynamic Insets:** Images within cards should often break the padding of the card, bleeding to the top or side edges to maintain the "Kinetic" feel.
+### Cards
+- No dividers. Use vertical whitespace or surface-container color shifts.
+- Images break the padding — bleed to card edges for kinetic feel.
 
-### Input Fields
-- **Styling:** Use `surface-container-highest` for the field background. 
-- **States:** Focus states should use a vibrant `tertiary` (Neon Green) glow rather than a thick border.
+### Inputs
+- Background: `surface-container-highest`
+- Focus state: `#00EBB3` glow, not a border
 
-### Chips & Tags
-- **Selection:** High-contrast blocks of color (Primary or Tertiary) with `full` roundedness to provide a visual break from the sharp-angled layout.
+### Chips / Tags
+- `#E894FF` or `#00EBB3` blocks. Full roundedness (`border-radius: 9999px`).
 
 ---
 
-## 6. Do's and Don'ts
+## 7. Design Principles
+
+1. **High-velocity layouts** — whitespace + large type create momentum
+2. **Editorial hierarchy** — treat screens like magazine spreads
+3. **Kinetic interactions** — sharp, responsive, no smoothed-over softness
+4. **Intentional asymmetry** — reject the comfortable centered grid
+
+---
+
+## 8. Do's and Don'ts
 
 ### Do
-- **Do** overlap elements. Let text sit partially over an image of an athlete to create depth.
-- **Do** use aggressive vertical spacing. Let the content breathe to maintain a "premium" feel.
-- **Do** use color blocks. A full-width section of `primary-container` with white text creates a powerful visual "reset."
+- Overlap elements — text over imagery creates depth
+- Use aggressive vertical spacing — premium products breathe
+- Use full-width color blocks (`#E894FF` section with white text = visual reset)
+- Let the accent color do the heavy lifting on focus and hierarchy
 
 ### Don't
-- **Don't** use 1px solid black or grey borders. They break the editorial immersion.
-- **Don't** center-align everything. Use left-aligned "staggered" layouts to create energy.
-- **Don't** use standard "web safe" colors. Stick strictly to the defined brand tokens to maintain the exclusive, impact-driven atmosphere.
-- **Don't** use soft, "bubbly" imagery. Use high-contrast, moody, or action-oriented photography.
+- Use 1px solid grey borders — they break the editorial immersion
+- Center-align everything
+- Use gradients
+- Use blue, green, or standard "AI product" colors
+- Use soft, rounded, bubbly imagery
+
+---
+
+## 9. Voice
+
+Precise. Confident. A practitioner talking to practitioners.
+Short sentences. First person. No buzzwords.
+
+**Banned:** seamlessly, powerful, robust, leverage, revolutionize,
+cutting-edge, game-changing, supercharge, unlock, streamline.

@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1280">
+<title>loop-closed — GitHub Cover</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    width: 1280px;
+    height: 640px;
+    background: #1F0027;
+    font-family: 'Space Grotesk', sans-serif;
+    overflow: hidden;
+    position: relative;
+  }
+
+  /* Ambient glow */
+  .glow-left {
+    position: absolute;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(232, 148, 255, 0.12) 0%, transparent 70%);
+    top: -100px;
+    left: -100px;
+    pointer-events: none;
+  }
+
+  .glow-right {
+    position: absolute;
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, rgba(0, 235, 179, 0.06) 0%, transparent 70%);
+    bottom: -50px;
+    right: 200px;
+    pointer-events: none;
+  }
+
+  /* Layout */
+  .container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    padding: 0 96px;
+    gap: 80px;
+    z-index: 1;
+  }
+
+  /* Left: mark + name */
+  .left {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    flex-shrink: 0;
+  }
+
+  .mark {
+    width: 120px;
+    height: 120px;
+  }
+
+  /* SVG glyph-mark: terminal > + return loop */
+  .name-block {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .name {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 52px;
+    font-weight: 500;
+    color: #E894FF;
+    letter-spacing: -0.02em;
+    line-height: 1;
+  }
+
+  .tag {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: #00EBB3;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+
+  /* Divider */
+  .divider {
+    width: 1px;
+    height: 280px;
+    background: rgba(232, 148, 255, 0.15);
+    flex-shrink: 0;
+  }
+
+  /* Right: headline + tagline + pill */
+  .right {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+    flex: 1;
+  }
+
+  .headline {
+    font-size: 48px;
+    font-weight: 700;
+    color: #f0e4f7;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+  }
+
+  .headline em {
+    color: #E894FF;
+    font-style: normal;
+  }
+
+  .subline {
+    font-size: 20px;
+    font-weight: 400;
+    color: #c4a0d0;
+    line-height: 1.5;
+    max-width: 520px;
+  }
+
+  .pill-row {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 16px;
+    border-radius: 9999px;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+  }
+
+  .pill-purple {
+    background: rgba(232, 148, 255, 0.12);
+    color: #E894FF;
+    border: 1px solid rgba(232, 148, 255, 0.2);
+  }
+
+  .pill-teal {
+    background: rgba(0, 235, 179, 0.08);
+    color: #00EBB3;
+    border: 1px solid rgba(0, 235, 179, 0.15);
+  }
+
+  .pill-amber {
+    background: rgba(255, 185, 97, 0.08);
+    color: #FFB961;
+    border: 1px solid rgba(255, 185, 97, 0.15);
+  }
+
+  /* Bottom strip */
+  .strip {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #E894FF 0%, #00EBB3 50%, transparent 100%);
+    opacity: 0.6;
+  }
+</style>
+</head>
+<body>
+
+  <div class="glow-left"></div>
+  <div class="glow-right"></div>
+
+  <div class="container">
+
+    <!-- Left -->
+    <div class="left">
+      <!-- Glyph-mark SVG -->
+      <svg class="mark" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- Terminal arrow > -->
+        <polyline
+          points="20,42 48,60 20,78"
+          stroke="#E894FF"
+          stroke-width="7"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          fill="none"
+        />
+        <!-- Return loop: starts right of arrow, curves up and back -->
+        <path
+          d="M 60 60 L 88 60 C 100 60 108 52 108 40 C 108 28 100 20 88 20 C 76 20 68 28 68 40 L 56 40"
+          stroke="#E894FF"
+          stroke-width="7"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          fill="none"
+        />
+        <!-- Arrowhead pointing left on the return -->
+        <polyline
+          points="66,30 56,40 66,50"
+          stroke="#E894FF"
+          stroke-width="7"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          fill="none"
+        />
+      </svg>
+
+      <div class="name-block">
+        <div class="name">loop-closed</div>
+        <div class="tag">Claude Code · v1.0</div>
+      </div>
+    </div>
+
+    <!-- Divider -->
+    <div class="divider"></div>
+
+    <!-- Right -->
+    <div class="right">
+      <div class="headline">
+        Stop re-explaining<br>yourself <em>every session.</em>
+      </div>
+      <div class="subline">
+        A collaboration system for Claude Code. Corrections stick.
+        Context transfers. The loop closes.
+      </div>
+      <div class="pill-row">
+        <span class="pill pill-purple">Constitution + Rules</span>
+        <span class="pill pill-teal">Shared Playbook</span>
+        <span class="pill pill-amber">install.sh</span>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="strip"></div>
+
+</body>
+</html>
