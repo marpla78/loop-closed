@@ -123,7 +123,7 @@ Best-effort. It's a starting point, not a service. Fork it and make it yours.
 ## Credits
 
 Built by Fabi Firpo — AI Product Designer.
-[X: @fabifirpo](https://x.com/fabifirpo) · [fabifirpo.com](https://fabifirpo.com)
+[X: @marpla78](https://x.com/marpla78)
 
 Built using the system itself.
 
