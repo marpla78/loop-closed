@@ -1,5 +1,7 @@
 # loop-closed
 
+![loop-closed](branding/github-cover.png)
+
 Every session starts cold. Corrections evaporate. You re-explain the same context
 Monday that you explained Friday.
 
