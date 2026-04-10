@@ -53,4 +53,11 @@ for rule in efficiency memory-first verification; do
   run ln -sf "$TARGET_DIR/rules/${rule}.md" "$RULES_DIR/${rule}.md"
 done
 
-printf '\nDone.\n\nNext steps:\n  1. Edit the "About You" section: %s\n  2. Add your active projects: %s/playbook.md\n  3. Start a Claude Code session — it reads the playbook first.\n\nDocs and examples: %s/\n' "$CLAUDE_MD" "$TARGET_DIR" "$SCRIPT_DIR"
+# Install the sandbag gate hook — the structural fix for push-harder
+HOOKS_DIR="$HOME/.claude/hooks"
+echo "→ Installing sandbag-gate hook in $HOOKS_DIR/"
+run mkdir -p "$HOOKS_DIR"
+run cp "$SYSTEM_DIR/hooks/sandbag-gate.sh" "$HOOKS_DIR/sandbag-gate.sh"
+run chmod +x "$HOOKS_DIR/sandbag-gate.sh"
+
+printf '\nDone.\n\nNext steps:\n  1. Edit the "About You" section: %s\n  2. Add your active projects: %s/playbook.md\n  3. Register the sandbag hook: add this to ~/.claude/settings.json under "hooks":\n     "UserPromptSubmit": [{"matcher": "", "hooks": [{"type": "command", "command": "bash ~/.claude/hooks/sandbag-gate.sh"}]}]\n  4. Open /hooks in Claude Code once (or restart) so the hook activates.\n  5. Start a session — it reads the playbook first.\n\nDocs and examples: %s/\n' "$CLAUDE_MD" "$TARGET_DIR" "$SCRIPT_DIR"

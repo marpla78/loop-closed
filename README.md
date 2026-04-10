@@ -41,7 +41,9 @@ loop-closed/
 │   ├── rules/
 │   │   ├── efficiency.md      # Decision tree: before any tool call, run this test
 │   │   ├── memory-first.md    # Read the playbook first. Always.
-│   │   └── verification.md    # No "done" without evidence. The two-strike rule.
+│   │   └── verification.md    # Sandbag gate + evidence gate + two-strike rule
+│   ├── hooks/
+│   │   └── sandbag-gate.sh    # The enforcement layer — injects the gate into context
 │   ├── playbook.md            # The shared brain — projects, sessions, feedback log
 │   └── templates/
 │       ├── spec-full.md       # For work taking >30 minutes
@@ -86,6 +88,8 @@ Two files, not one.
 **The Constitution** (`system/CLAUDE.md`) holds behavioral rules — principles that apply to every session, every project. Don't start work without a spec. Verify before saying done. Two failed attempts mean the approach is wrong. These load automatically at the start of every Claude Code session.
 
 **The shared playbook** (`system/playbook.md`) holds experiential memory — what's active, what happened last session, what corrections have been made. The AI reads it first. You both maintain it. After 10 sessions, the feedback log starts doing work you can feel.
+
+**The sandbag hook** (`system/hooks/sandbag-gate.sh`) is the enforcement layer. Text-based rules that say "be bold" compete with trained defaults and lose — the AI reads the rule, acknowledges it, and still produces conservative output. The hook runs *outside* the generation loop and injects the gate check into context on every user message. It's the only layer where this can actually be enforced, not just documented. Without it, you're running the system with its most important structural piece missing.
 
 The three auto-loading rules sharpen the behavioral layer:
 - `efficiency.md` — a decision tree that runs before every tool call

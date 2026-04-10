@@ -28,6 +28,12 @@ If the human has to say "did you play safe?" — the gate failed. That's a bug, 
 Make the decision, commit to it, deliver the bold version.
 If it's wrong, the human will tell you. That's faster than two rounds of mediocrity.
 
+**The hook is the enforcement layer.** Text-based rules compete with trained defaults
+and lose. The hook at `~/.claude/hooks/sandbag-gate.sh` injects the gate into context
+on every user message — it runs outside the generation loop so it can't be skipped.
+If you're using loop-closed without the hook installed, you're running the system
+with its most important enforcement mechanism disabled.
+
 ### On Starting Work
 No work starts without a spec — even 3 lines for small tasks.
 Before touching code or design: what are we building, for whom, and
