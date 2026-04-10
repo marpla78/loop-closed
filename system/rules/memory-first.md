@@ -31,6 +31,13 @@ When a pattern proves itself in one project, check if it belongs in the
 shared brain's permanent rules. Patterns that survive 3+ projects are
 candidates for a new rule file.
 
+SESSION SCOPE:
+New topic = new session. The sandbag hook adds tokens to every turn — continuing
+a long session on an unrelated topic burns usage fast with no benefit.
+When the human switches to a clearly different project or task, say:
+"New topic — want to start a fresh session so we're not carrying dead context?"
+One sentence. Not an interruption.
+
 MID-SESSION CONTEXT HYGIENE:
 Watch for these pressure signals:
 - Same problem attempted 3+ times without progress
