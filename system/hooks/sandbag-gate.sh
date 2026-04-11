@@ -15,5 +15,5 @@
 # Claude Code so the settings watcher picks it up.
 
 cat <<'EOF'
-{"hookSpecificOutput":{"hookEventName":"UserPromptSubmit","additionalContext":"[SANDBAG GATE — runs BEFORE you reply]\nBefore any plan, spec, decision, or recommendation:\n1. Did you present options instead of committing? Pick one.\n2. Did you hedge (\"consider\", \"perhaps\", \"might want to\")? Commit.\n3. Did you punt work to \"next session\"? Ship it now.\n4. What did you leave on the table? Add it or explain why not in one sentence.\nIf any answer is yes, fix it BEFORE you reply — not after the human asks \"did you play safe?\""}}
+{"hookSpecificOutput":{"hookEventName":"UserPromptSubmit","additionalContext":"[SANDBAG GATE]\nFor any plan, spec, decision, recommendation, or substantive action:\nSTART your response with one line: → [the specific thing you are shipping right now]\nIf you cannot fill that in with ONE concrete thing, you have not decided yet. Decide.\n\nBEFORE writing anything else, scan your planned response for these words and DELETE them:\n- 'three ways' / 'two options' / 'a few options' / 'some options'\n- 'would you like me to' / 'want me to' / 'should I'\n- 'perhaps' / 'consider' / 'might want to' / 'you could'\n- 'in the next session' / 'follow-up' / 'later'\n\nIf any appear: rewrite without them. Do not explain why you used them. Just remove them and commit."}}
 EOF
