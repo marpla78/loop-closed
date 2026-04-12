@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>loop-closed — What it does</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --plum:    #1F0027;
+    --plum-2:  #2D0038;
+    --accent:  #E894FF;
+    --teal:    #00EBB3;
+    --amber:   #FFB961;
+    --text:    #F0E0FF;
+    --muted:   rgba(240, 224, 255, 0.45);
+    --border:  rgba(232, 148, 255, 0.12);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    /* Multi-zone gradient: purple at top, teal mid, purple pool at bottom */
+    background:
+      radial-gradient(ellipse 900px 700px at 10% 8%,  rgba(232,148,255,0.07) 0%, transparent 70%),
+      radial-gradient(ellipse 700px 500px at 85% 52%, rgba(0,235,179,0.05)   0%, transparent 70%),
+      radial-gradient(ellipse 800px 600px at 50% 92%, rgba(232,148,255,0.09) 0%, transparent 65%),
+      #1F0027;
+    color: var(--text);
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  /* ── Noise texture ── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.035'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ── Scroll progress bar ── */
+  .scroll-progress {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent), var(--teal));
+    transform-origin: left;
+    transform: scaleX(0);
+    z-index: 100;
+  }
+  @supports (animation-timeline: scroll()) {
+    .scroll-progress {
+      animation: progressGrow linear;
+      animation-timeline: scroll();
+    }
+    @keyframes progressGrow { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+  }
+
+  /* ── Cursor glow ── */
+  .cursor-glow {
+    position: fixed;
+    width: 500px; height: 500px;
+    border-radius: 50%;
+    background: radial-gradient(circle,
+      rgba(232,148,255,0.055) 0%,
+      rgba(0,235,179,0.025) 35%,
+      transparent 70%
+    );
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+    mix-blend-mode: screen;
+    z-index: 0;
+    opacity: 0;
+    transition: opacity 0.6s;
+  }
+  .cursor-glow.active { opacity: 1; }
+
+  /* ── Ambient glows (slow drift, purely atmospheric) ── */
+  .glow {
+    position: fixed;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .glow-1 {
+    width: 700px; height: 700px;
+    background: radial-gradient(circle, rgba(232,148,255,0.07) 0%, transparent 70%);
+    top: -200px; left: -200px;
+    animation: drift1 28s ease-in-out infinite;
+  }
+  .glow-2 {
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(0,235,179,0.04) 0%, transparent 70%);
+    bottom: 10%; right: -100px;
+    animation: drift2 34s ease-in-out infinite;
+  }
+  @keyframes drift1 {
+    0%, 100% { transform: translate(0, 0); }
+    33% { transform: translate(40px, 30px); }
+    66% { transform: translate(-20px, -15px); }
+  }
+  @keyframes drift2 {
+    0%, 100% { transform: translate(0, 0); }
+    33% { transform: translate(-30px, -25px); }
+    66% { transform: translate(20px, 35px); }
+  }
+
+  /* ── Layout ── */
+  .page {
+    position: relative;
+    z-index: 1;
+    max-width: 840px;
+    margin: 0 auto;
+    padding: 0 40px 120px;
+  }
+
+  /* ── Reveal animations ── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(32px);
+    transition: opacity 700ms cubic-bezier(0.16, 1, 0.3, 1),
+                transform 700ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  /* Scale reveal — for the result block */
+  .reveal-scale {
+    opacity: 0;
+    transform: scale(0.96) translateY(20px);
+    transition: opacity 900ms cubic-bezier(0.16, 1, 0.3, 1),
+                transform 900ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .reveal-scale.visible { opacity: 1; transform: scale(1) translateY(0); }
+
+  .delay-1 { transition-delay: 80ms; }
+  .delay-2 { transition-delay: 160ms; }
+  .delay-3 { transition-delay: 240ms; }
+
+  /* ── Header ── */
+  header {
+    position: relative;
+    padding: 72px 0 80px;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  /* Hero section accent line at bottom */
+  header::after {
+    content: '';
+    position: absolute;
+    bottom: -1px; left: 0;
+    width: 120px; height: 1px;
+    background: linear-gradient(90deg, var(--accent), transparent);
+  }
+
+  .logo-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .glyph-mark {
+    flex-shrink: 0;
+    height: 52px; width: auto;
+    opacity: 0;
+    transform: scale(0.85);
+    animation: logoReveal 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.15s forwards;
+    filter: drop-shadow(0 0 14px rgba(232,148,255,0.35));
+    transition: filter 0.4s, transform 0.4s;
+  }
+  .glyph-mark:hover {
+    filter: drop-shadow(0 0 24px rgba(232,148,255,0.6));
+    transform: scale(1.05);
+  }
+  @keyframes logoReveal {
+    to { opacity: 1; transform: scale(1); }
+  }
+
+  .footer-logo {
+    height: 22px; width: auto;
+    opacity: 0.5;
+    transition: opacity 0.3s;
+    filter: drop-shadow(0 0 6px rgba(232,148,255,0.2));
+  }
+  footer:hover .footer-logo { opacity: 0.85; }
+
+  .product-name {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 18px; font-weight: 500;
+    color: var(--accent);
+    letter-spacing: 0.01em;
+  }
+
+  .hero-headline {
+    font-size: clamp(36px, 6vw, 58px);
+    font-weight: 700;
+    line-height: 1.08;
+    letter-spacing: -0.03em;
+    color: var(--text);
+    max-width: 680px;
+  }
+  .hero-headline em {
+    font-style: normal;
+    background: linear-gradient(90deg, var(--accent), #c4b5fd, var(--accent));
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: shimmer 6s linear infinite;
+  }
+  @keyframes shimmer {
+    0% { background-position: 0% center; }
+    100% { background-position: 200% center; }
+  }
+
+  .hero-sub {
+    font-size: 18px; font-weight: 400;
+    color: var(--muted);
+    max-width: 520px;
+    line-height: 1.55;
+  }
+  .hero-sub strong { color: var(--text); font-weight: 500; }
+
+  /* ── Section divider ── */
+  .divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--border) 30%, var(--border) 70%, transparent);
+    margin: 0;
+  }
+
+  /* ── Problem band ── */
+  .problem {
+    margin: 64px 0;
+    padding: 40px;
+    background: var(--plum-2);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--amber);
+    border-radius: 0 12px 12px 0;
+    transition: border-color 0.4s, box-shadow 0.4s;
+  }
+  .problem:hover {
+    border-color: rgba(255,185,97,0.35);
+    box-shadow: -3px 0 28px rgba(255,185,97,0.1);
+  }
+
+  .problem-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--amber);
+    margin-bottom: 16px;
+  }
+  .problem p {
+    font-size: 17px;
+    color: var(--text);
+    line-height: 1.65;
+    opacity: 0.85;
+  }
+
+  /* ── Concepts zone ── */
+  .concepts-zone {
+    position: relative;
+    padding: 72px 0 0;
+  }
+
+  /* Dot grid — texture layer behind the concepts */
+  .concepts-zone::before {
+    content: '';
+    position: absolute;
+    inset: 0 -40px;
+    background-image: radial-gradient(circle, rgba(232,148,255,0.07) 1px, transparent 1px);
+    background-size: 28px 28px;
+    pointer-events: none;
+    z-index: 0;
+    mask-image: linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.5) 15%, rgba(0,0,0,0.5) 85%, transparent 100%);
+    -webkit-mask-image: linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.5) 15%, rgba(0,0,0,0.5) 85%, transparent 100%);
+  }
+
+  .section-header {
+    position: relative;
+    z-index: 1;
+    margin-bottom: 40px;
+  }
+
+  .section-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--teal);
+    margin-bottom: 12px;
+  }
+
+  .section-title {
+    font-size: 28px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    color: var(--text);
+  }
+
+  /* ── Concept cards ── */
+  .concepts {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .concept {
+    position: relative;
+    padding: 40px 24px 40px 36px;
+    margin: 0 -24px;
+    border-top: 1px solid var(--border);
+    border-left: 6px solid transparent;
+    border-radius: 0 12px 12px 0;
+    transition: background 0.4s, box-shadow 0.4s;
+  }
+
+  /* Semantic left border: purple / teal / amber */
+  .concept:nth-child(1) { border-left-color: var(--accent); }
+  .concept:nth-child(2) { border-left-color: var(--teal); }
+  .concept:nth-child(3) { border-left-color: var(--amber); }
+
+  /* Hover glow matches border */
+  .concept:nth-child(1):hover { background: rgba(232,148,255,0.03); box-shadow: -3px 0 24px rgba(232,148,255,0.18); }
+  .concept:nth-child(2):hover { background: rgba(0,235,179,0.03);   box-shadow: -3px 0 24px rgba(0,235,179,0.14);   }
+  .concept:nth-child(3):hover { background: rgba(255,185,97,0.03);  box-shadow: -3px 0 24px rgba(255,185,97,0.14);  }
+
+  /* Cursor light per card */
+  .concept::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 0 12px 12px 0;
+    background: radial-gradient(
+      circle at var(--mx, 50%) var(--my, 50%),
+      rgba(232,148,255,0.04) 0%, transparent 60%
+    );
+    opacity: 0;
+    transition: opacity 0.4s;
+    pointer-events: none;
+  }
+  .concept:hover::after { opacity: 1; }
+
+  .concept-title {
+    font-size: 22px; font-weight: 600;
+    letter-spacing: -0.015em;
+    color: var(--text);
+    margin-bottom: 12px;
+  }
+
+  .concept-accent {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px; font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border-radius: 4px;
+    margin-left: 12px;
+    vertical-align: middle;
+    position: relative; top: -2px;
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .concept:hover .concept-accent { transform: translateX(4px); }
+
+  .tag-1 { background: rgba(232,148,255,0.12); color: var(--accent); }
+  .tag-2 { background: rgba(0,235,179,0.1);   color: var(--teal);   }
+  .tag-3 { background: rgba(255,185,97,0.1);   color: var(--amber);  }
+
+  .concept-desc {
+    font-size: 16px;
+    color: var(--muted);
+    line-height: 1.7;
+    max-width: 620px;
+  }
+  .concept-desc strong { color: var(--text); font-weight: 500; }
+
+  /* ── Result block ── */
+  .result-zone {
+    position: relative;
+    margin-top: 80px;
+    padding: 4px;
+    border-radius: 18px;
+    background: linear-gradient(135deg, rgba(232,148,255,0.25), rgba(0,235,179,0.15), rgba(232,148,255,0.1));
+    animation: borderPulse 5s ease-in-out infinite;
+  }
+  @keyframes borderPulse {
+    0%, 100% { opacity: 0.7; }
+    50% { opacity: 1; }
+  }
+
+  .result {
+    padding: 56px 48px;
+    background: linear-gradient(160deg,
+      rgba(45, 0, 56, 0.98) 0%,
+      rgba(31, 0, 39, 0.98) 60%,
+      rgba(24, 20, 40, 0.98) 100%
+    );
+    border-radius: 15px;
+    text-align: center;
+  }
+
+  /* Inner glow pool */
+  .result::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 15px;
+    background: radial-gradient(ellipse 70% 60% at 50% 100%, rgba(232,148,255,0.1) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .result-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--teal);
+    margin-bottom: 24px;
+    position: relative;
+  }
+
+  .result-headline {
+    font-size: clamp(28px, 5vw, 42px);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+    color: var(--text);
+    margin: 0 auto 20px;
+    position: relative;
+  }
+  .result-headline em {
+    font-style: normal;
+    color: var(--accent);
+  }
+
+  .result-sub {
+    font-size: 15px;
+    color: var(--muted);
+    position: relative;
+  }
+
+  /* ── Footer ── */
+  footer {
+    margin-top: 80px;
+    padding-top: 32px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .footer-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .footer-name {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: var(--accent);
+    opacity: 0.7;
+  }
+
+  .footer-link {
+    font-size: 13px;
+    color: var(--muted);
+    text-decoration: none;
+    font-family: 'JetBrains Mono', monospace;
+    transition: color 0.3s;
+    position: relative;
+  }
+  .footer-link::after {
+    content: '';
+    position: absolute;
+    bottom: -2px; left: 0;
+    width: 0; height: 1px;
+    background: var(--accent);
+    transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .footer-link:hover { color: var(--accent); }
+  .footer-link:hover::after { width: 100%; }
+
+  /* ── Bottom strip ── */
+  .strip {
+    position: relative; z-index: 1;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent) 0%, var(--teal) 50%, transparent 100%);
+    opacity: 0.4;
+  }
+
+  /* ── Reduced motion ── */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+    .reveal, .reveal-scale { opacity: 1; transform: none; }
+    .cursor-glow { display: none; }
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 600px) {
+    .page { padding: 0 24px 80px; }
+    header { padding: 48px 0 56px; }
+    .problem { padding: 28px; }
+    .result { padding: 36px 24px; }
+    .concept { padding: 32px 16px 32px 24px; margin: 0 -16px; }
+    .concepts-zone::before { display: none; }
+    footer { flex-direction: column; gap: 16px; align-items: flex-start; }
+    .cursor-glow { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="scroll-progress"></div>
+<div class="cursor-glow" id="cursorGlow"></div>
+<div class="glow glow-1"></div>
+<div class="glow glow-2"></div>
+
+<div class="page">
+
+  <!-- Header -->
+  <header>
+    <div class="logo-row reveal">
+      <svg class="glyph-mark" viewBox="0 0 332 261" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M215.42 59.8505C223.214 59.233 230.736 60.6105 237.9 63.36C284.923 81.4075 282.088 148.225 233.696 162.553C225.075 165.105 217.068 164.533 208.366 164.526L188.629 164.508C182.963 164.505 172.345 164.858 167.221 164.38C172.286 170.571 181.111 175.929 184.656 183.236C186.426 186.883 183.77 190.147 179.864 189.664C175.958 189.181 168.608 180.036 164.976 176.268C160.581 171.708 150.978 163.754 150.217 160.127C149.456 156.5 153.623 153.773 156.539 150.758C159.748 147.426 163.002 144.138 166.3 140.895C169.494 137.716 171.675 135.536 175 132.5C178.567 129.243 181.395 127.049 184.656 131C187.917 134.951 183.786 137.841 180.456 141.424C179.763 141.964 177.373 144.533 176.56 145.345L166.943 154.902C170.336 154.309 176.835 154.495 180.48 154.5L206.766 154.536C218.686 154.548 230.298 155.598 240.672 148.471C246.038 144.785 252.345 138.856 255.605 133.224C266.928 113.67 260.89 88.571 241.8 76.4317C221.705 63.647 194.639 70.3432 182.636 90.7877C180.269 94.8185 178.577 98.5832 177.621 103.204C176.789 107.218 177.48 112.116 175.331 115.726C171.732 118.527 166.639 116.94 166.586 112.019C166.281 83.7882 187.731 62.4062 215.42 59.8505Z" fill="#E894FF"/>
+        <path d="M73.0367 123.8C77.0747 123.592 92.1835 133.171 96.5432 135.583L118.411 147.725C122.171 149.832 125.983 151.693 129.597 154.074C130.505 154.752 132.12 155.334 133 157.5C133.88 159.666 133.242 162.837 130.429 164.503C125.176 167.613 119.885 170.405 114.613 173.359L78.9115 193.326C74.9832 195.171 73.9102 195.903 70.232 193.235C69.7105 192.131 69.477 191.135 69.16 189.967C69.796 187.647 69.989 186.929 72.1222 185.567C74.8822 183.805 77.7967 182.309 80.6625 180.722L95.729 172.362L110.783 164.006C113.465 162.505 116.451 160.696 119.172 159.368C117.234 158.18 114.946 157.195 112.936 156.085C103.656 150.963 94.3242 145.963 85.1122 140.715C80.5902 138.099 75.5845 135.972 71.3352 132.926C67.3367 130.06 68.881 125.567 73.0367 123.8Z" fill="#E894FF"/>
+      </svg>
+      <span class="product-name">loop-closed</span>
+    </div>
+
+    <h1 class="hero-headline reveal delay-1">
+      Your AI starts over.<br>
+      <em>Every. Single. Chat.</em>
+    </h1>
+
+    <p class="hero-sub reveal delay-2">
+      <strong>Until now.</strong> One install. Every session after, your AI arrives knowing
+      what happened last time — what you're building, what failed, how you like to work.
+    </p>
+  </header>
+
+  <!-- Problem -->
+  <div class="problem reveal">
+    <div class="problem-label">The problem</div>
+    <p>
+      Every time you open a new chat with an AI assistant, it starts from zero.
+      It doesn't remember what you worked on last week, what decisions you made together,
+      or what failed last time. You're not building a working relationship.
+      You're briefing a new contractor every single time.
+    </p>
+  </div>
+
+  <!-- Concepts zone with dot grid -->
+  <div class="concepts-zone">
+
+    <div class="section-header reveal">
+      <div class="section-label">How it works</div>
+      <div class="section-title">Three pieces. Installed once.</div>
+    </div>
+
+    <div class="concepts">
+
+      <div class="concept reveal delay-1">
+        <div class="concept-title">
+          The Playbook
+          <span class="concept-accent tag-1">Memory</span>
+        </div>
+        <p class="concept-desc">
+          A shared document that both you and your AI update after every session.
+          It holds the things a good collaborator would remember:
+          <strong>what you're working on, what happened last time, what approaches failed, how you like to work.</strong>
+          Your AI reads it first before doing anything. You can read and edit it too. It's just text.
+        </p>
+      </div>
+
+      <div class="concept reveal delay-2">
+        <div class="concept-title">
+          The Rules
+          <span class="concept-accent tag-2">Behavior</span>
+        </div>
+        <p class="concept-desc">
+          By default, your AI hedges everything. It shows you options and asks you to choose.
+          It qualifies every answer. The rules change that. <strong>Claude commits — to a decision,
+          to an approach, to an answer.</strong> You get direct responses that move work forward,
+          not polite suggestions that put the thinking back on you.
+        </p>
+      </div>
+
+      <div class="concept reveal delay-3">
+        <div class="concept-title">
+          The Gate
+          <span class="concept-accent tag-3">Enforcement</span>
+        </div>
+        <p class="concept-desc">
+          A small program that runs silently every time you send a message.
+          Before your AI writes a single word, it has to name
+          <strong>the one concrete thing it's delivering.</strong>
+          This stops the most common failure: a long, careful, safe response
+          that technically answers your question but never commits to anything.
+        </p>
+      </div>
+
+    </div>
+  </div><!-- /concepts-zone -->
+
+  <!-- Result -->
+  <div class="result-zone reveal-scale">
+    <div class="result">
+      <div class="result-label">The outcome</div>
+      <h2 class="result-headline">
+        Less like a tool.<br>
+        More like <em>a teammate who was actually there.</em>
+      </h2>
+      <p class="result-sub">Plain text. One install. Yours to adapt.</p>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="reveal">
+    <div class="footer-left">
+      <svg class="footer-logo" viewBox="0 0 332 261" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M215.42 59.8505C223.214 59.233 230.736 60.6105 237.9 63.36C284.923 81.4075 282.088 148.225 233.696 162.553C225.075 165.105 217.068 164.533 208.366 164.526L188.629 164.508C182.963 164.505 172.345 164.858 167.221 164.38C172.286 170.571 181.111 175.929 184.656 183.236C186.426 186.883 183.77 190.147 179.864 189.664C175.958 189.181 168.608 180.036 164.976 176.268C160.581 171.708 150.978 163.754 150.217 160.127C149.456 156.5 153.623 153.773 156.539 150.758C159.748 147.426 163.002 144.138 166.3 140.895C169.494 137.716 171.675 135.536 175 132.5C178.567 129.243 181.395 127.049 184.656 131C187.917 134.951 183.786 137.841 180.456 141.424C179.763 141.964 177.373 144.533 176.56 145.345L166.943 154.902C170.336 154.309 176.835 154.495 180.48 154.5L206.766 154.536C218.686 154.548 230.298 155.598 240.672 148.471C246.038 144.785 252.345 138.856 255.605 133.224C266.928 113.67 260.89 88.571 241.8 76.4317C221.705 63.647 194.639 70.3432 182.636 90.7877C180.269 94.8185 178.577 98.5832 177.621 103.204C176.789 107.218 177.48 112.116 175.331 115.726C171.732 118.527 166.639 116.94 166.586 112.019C166.281 83.7882 187.731 62.4062 215.42 59.8505Z" fill="#E894FF"/>
+        <path d="M73.0367 123.8C77.0747 123.592 92.1835 133.171 96.5432 135.583L118.411 147.725C122.171 149.832 125.983 151.693 129.597 154.074C130.505 154.752 132.12 155.334 133 157.5C133.88 159.666 133.242 162.837 130.429 164.503C125.176 167.613 119.885 170.405 114.613 173.359L78.9115 193.326C74.9832 195.171 73.9102 195.903 70.232 193.235C69.7105 192.131 69.477 191.135 69.16 189.967C69.796 187.647 69.989 186.929 72.1222 185.567C74.8822 183.805 77.7967 182.309 80.6625 180.722L95.729 172.362L110.783 164.006C113.465 162.505 116.451 160.696 119.172 159.368C117.234 158.18 114.946 157.195 112.936 156.085C103.656 150.963 94.3242 145.963 85.1122 140.715C80.5902 138.099 75.5845 135.972 71.3352 132.926C67.3367 130.06 68.881 125.567 73.0367 123.8Z" fill="#E894FF"/>
+      </svg>
+      <span class="footer-name">loop-closed</span>
+    </div>
+    <a href="https://github.com/marpla78/loop-closed" class="footer-link" target="_blank">github.com/marpla78/loop-closed</a>
+  </footer>
+
+</div>
+
+<div class="strip"></div>
+
+<script>
+  // ── Scroll + scale reveals ──
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal, .reveal-scale').forEach(el => obs.observe(el));
+
+  // ── Cursor glow ──
+  const glow = document.getElementById('cursorGlow');
+  let raf;
+  document.addEventListener('mousemove', (e) => {
+    if (!glow.classList.contains('active')) glow.classList.add('active');
+    cancelAnimationFrame(raf);
+    raf = requestAnimationFrame(() => {
+      glow.style.left = e.clientX + 'px';
+      glow.style.top  = e.clientY + 'px';
+    });
+  });
+  document.addEventListener('mouseleave', () => glow.classList.remove('active'));
+
+  // ── Card cursor glow ──
+  document.querySelectorAll('.concept').forEach(card => {
+    card.addEventListener('mousemove', (e) => {
+      const r = card.getBoundingClientRect();
+      card.style.setProperty('--mx', ((e.clientX - r.left) / r.width  * 100) + '%');
+      card.style.setProperty('--my', ((e.clientY - r.top)  / r.height * 100) + '%');
+    });
+  });
+
+  // ── Scroll progress fallback ──
+  if (!CSS.supports('animation-timeline', 'scroll()')) {
+    const bar = document.querySelector('.scroll-progress');
+    window.addEventListener('scroll', () => {
+      requestAnimationFrame(() => {
+        const h = document.documentElement.scrollHeight - window.innerHeight;
+        bar.style.transform = 'scaleX(' + (h > 0 ? window.scrollY / h : 0) + ')';
+      });
+    }, { passive: true });
+  }
+</script>
+</body>
+</html>

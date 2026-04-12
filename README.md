@@ -22,6 +22,8 @@ AI sessions are stateless by design. Each one starts fresh — not because the m
 
 ## What this is
 
+**[👉 See the one-pager](https://marpla78.github.io/loop-closed/)** — 2-minute visual explanation for anyone new to the system.
+
 A CLAUDE.md (behavioral rules) and a shared playbook (accumulated memory) that together make sessions stateful. Not a chatbot wrapper. Not a prompt library. Infrastructure for how you work: an operating manual that auto-loads every session, plus a shared brain that both you and your AI maintain. The combination is the insight.
 
 ## Before / After
