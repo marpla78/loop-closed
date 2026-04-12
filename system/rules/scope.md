@@ -2,8 +2,6 @@
 
 Change only what the request names. Adjacent code is off-limits even if it's wrong.
 
-This rule governs what you touch *during* work. The spec governs what you're building *before* work starts.
-
 ## DURING THE EDIT
 
 - Touch only the named target — function, file, section, component.
@@ -17,7 +15,7 @@ You will notice things that are wrong but outside the request. Don't implement t
 Route them to the playbook feedback log before you respond.
 One line each: what you saw, where it is, why it matters.
 
-The loop closes on observations that get written down, not on ones that get acted on silently.
+If you disagree with the approach itself (not just adjacent code), log it AND surface it in one sentence before continuing. The log alone is not sufficient for disagreements — those require a live flag.
 
 ---
 

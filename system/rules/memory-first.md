@@ -19,6 +19,7 @@ a trigger question instead: "What are we trying to learn or decide?"
 ON CORRECTION (the human says "no, not that" or "don't do X"):
 Write a feedback memory IMMEDIATELY — before your next response.
 Add it to the Feedback Log in your shared brain. Not later. Not "at the end." Now.
+Format: [what happened] — [context where it happened] — Rule: [what changes from now on].
 
 ON CONFIRMATION (the human says "yes exactly" or accepts non-obvious approach):
 Write that down too. Learn from success, not just failure.
@@ -37,6 +38,7 @@ a long session on an unrelated topic burns usage fast with no benefit.
 When the human switches to a clearly different project or task, say:
 "New topic — want to start a fresh session so we're not carrying dead context?"
 One sentence. Not an interruption.
+Also flag when the session has run 10+ turns on a topic that wasn't the stated purpose — drift accumulates before the switch feels "clear."
 
 MID-SESSION CONTEXT HYGIENE:
 Watch for these pressure signals:

@@ -57,7 +57,7 @@ loop-closed/
 │   └── specs-good-vs-bad.md   # Vague vs sharp: 3 pairs, 3 diagnoses
 ├── branding/
 │   ├── logo-prompts.md        # Image generation prompts for the logo (Imagen 2)
-│   └── visual-identity.md     # Color, type, what not to do
+│   └── DESIGN.md              # Color, type, visual identity decisions
 ├── docs/
 │   ├── philosophy.md          # The thinking behind the system
 │   └── blog-post-draft.md     # The companion post
@@ -86,16 +86,16 @@ Either way: under 10 minutes.
 
 Two files, not one.
 
-**The Constitution** (`system/CLAUDE.md`) holds behavioral rules — principles that apply to every session, every project. Don't start work without a spec. Verify before saying done. Two failed attempts mean the approach is wrong. These load automatically at the start of every Claude Code session.
+**The Constitution** (`system/CLAUDE.md`) holds behavioral rules — principles that apply to every session. Don't start work without a spec. Verify before saying done. Two failed attempts mean the approach is wrong. These load automatically at the start of every Claude Code session.
 
 **The shared playbook** (`system/playbook.md`) holds experiential memory — what's active, what happened last session, what corrections have been made. The AI reads it first. You both maintain it. After 10 sessions, the feedback log starts doing work you can feel.
 
-**The sandbag hook** (`system/hooks/sandbag-gate.sh`) is the enforcement layer. Text-based rules that say "be bold" compete with trained defaults and lose — the AI reads the rule, acknowledges it, and still produces conservative output. The hook runs *outside* the generation loop and injects the gate check into context on every user message. It's the only layer where this can actually be enforced, not just documented. Without it, you're running the system with its most important structural piece missing.
+**The sandbag gate** (`system/hooks/sandbag-gate.sh`) is the enforcement layer. Text-based rules that say "be bold" compete with trained defaults and lose — the AI reads the rule, acknowledges it, and still produces conservative output. The hook runs *outside* the generation loop and injects the gate check into context on every user message. It's the only layer where this can actually be enforced, not just documented. Without it, you're running the system with its most important structural piece missing.
 
 Four auto-loading rules sharpen the behavioral layer:
 - `efficiency.md` — a decision tree that runs before every tool call
 - `memory-first.md` — read the playbook first, always; write corrections immediately
-- `verification.md` — no "done" without evidence; includes the **two-strike rule**: if the same fix approach fails twice, the approach is wrong — try something fundamentally different
+- `verification.md` — enforces the **Two-Strike Rule**: two failures mean the approach is wrong, not the execution — pivot to something fundamentally different, not a refined version of the same idea; plus the evidence gate: no "done" without a screenshot, test output, or config confirmation
 - `scope.md` — change only what the request names; out-of-scope observations route to the playbook feedback log instead of silently expanding the diff
 
 ## Make it yours

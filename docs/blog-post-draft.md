@@ -40,7 +40,7 @@ I called this architecture "Two Brains" — one for principles, one for experien
 
 ---
 
-Three rules changed how I work. Not in a "productivity hack" way — in a way where the sessions felt structurally different. Worth explaining each one honestly.
+Four rules changed how I work. Not in a "productivity hack" way — in a way where the sessions felt structurally different. Worth explaining each one honestly.
 
 **The efficiency decision tree.** Before any tool call — before searching for a file, running a command, checking documentation — run this silent test: do I already know this? Six steps in order: already in context, then memory files, then CLAUDE.md, then local file read, then CLI command, then and only then call an external service.
 
@@ -60,6 +60,12 @@ What I didn't expect: recording confirmed-good approaches was as valuable as rec
 
 The feedback log starts thin. After 10 sessions it has teeth.
 
+**The scope rule.** Change only what the request names. Adjacent code is off-limits, even if it's wrong.
+
+The interesting part isn't the restriction — it's what happens to the observations. When I notice something wrong outside the request boundary, I don't implement it and I don't ignore it. I log it. One line in the playbook: what I saw, where it is, why it matters. The next time that file comes up, the observation is waiting. The correction lands in context instead of as an unreviewed side effect of a diff that touched seven things.
+
+I called this "scope discipline as memory routing" — not restriction. The noticing is the skill. The routing is the discipline. The feedback log is where the observations compound.
+
 ---
 
 Four sessions in, the changes weren't dramatic. That's worth saying plainly — I'm not going to describe a transformation. What actually changed: sessions start knowing the context. The 40-minute debug session that was mostly re-establishing what we already knew became 12 minutes. Not because the AI got smarter. Because the infrastructure got better.
@@ -72,7 +78,7 @@ The return on 5 minutes of maintenance is felt most on the Mondays after a compl
 
 The repo is at github.com/marpla78/loop-closed — fork it, make it yours. Takes 10 minutes to set up via the install script. Two weeks to feel different.
 
-What's inside: one constitutional file that tells Claude how to work, three behavioral rules that auto-load every session, a shared playbook template, and filled examples showing what it looks like after a month of real use.
+What's inside: one constitutional file that tells Claude how to work, four behavioral rules that auto-load every session, a shared playbook template, and filled examples showing what it looks like after a month of real use.
 
 What to change first: the "About You" section in CLAUDE.md. That's where you describe who you are and how you work. Everything else can wait until the first session.
 

@@ -49,7 +49,7 @@ run cp "$SYSTEM_DIR/templates/"*.md "$TARGET_DIR/templates/"
 RULES_DIR="$HOME/.claude/rules"
 echo "→ Creating rule symlinks in $RULES_DIR/"
 run mkdir -p "$RULES_DIR"
-for rule in efficiency memory-first verification; do
+for rule in efficiency memory-first verification scope; do
   run ln -sf "$TARGET_DIR/rules/${rule}.md" "$RULES_DIR/${rule}.md"
 done
 

@@ -110,8 +110,6 @@
 - [ ] Propose system updates — new rule? Template update? Playbook section?
 - [ ] Apply approved changes
 - [ ] Create snapshot of your system before applying
-- [ ] Update CHANGELOG.md
-- [ ] Bump VERSION
 
 ---
 

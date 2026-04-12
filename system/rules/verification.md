@@ -34,13 +34,14 @@ what you verified and how.
 ## THE TWO-STRIKE RULE
 If the same fix approach fails twice, the approach is wrong.
 Try something fundamentally different. No third attempt with CSS tweaks.
+When it fires, check your playbook log — the right direction may already be recorded there.
 
 ## VISUAL CHECKLIST
 
 APPLIES TO: Web pages, landing pages, dashboards, public-facing UI.
 DOES NOT APPLY: CLI tools, markdown files, config files.
 
-Add your own scope note here. Example:
+Add your scope note here (required — fill this in before use):
 "For plugin panels: check panel constraints (width limit), no overflow."
 
 After ANY visual/UI change:
