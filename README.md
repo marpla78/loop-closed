@@ -41,7 +41,8 @@ loop-closed/
 │   ├── rules/
 │   │   ├── efficiency.md      # Decision tree: before any tool call, run this test
 │   │   ├── memory-first.md    # Read the playbook first. Always.
-│   │   └── verification.md    # Sandbag gate + evidence gate + two-strike rule
+│   │   ├── verification.md    # Sandbag gate + evidence gate + two-strike rule
+│   │   └── scope.md           # Change only what the request names. Route the rest.
 │   ├── hooks/
 │   │   └── sandbag-gate.sh    # The enforcement layer — injects the gate into context
 │   ├── playbook.md            # The shared brain — projects, sessions, feedback log
@@ -91,10 +92,11 @@ Two files, not one.
 
 **The sandbag hook** (`system/hooks/sandbag-gate.sh`) is the enforcement layer. Text-based rules that say "be bold" compete with trained defaults and lose — the AI reads the rule, acknowledges it, and still produces conservative output. The hook runs *outside* the generation loop and injects the gate check into context on every user message. It's the only layer where this can actually be enforced, not just documented. Without it, you're running the system with its most important structural piece missing.
 
-The three auto-loading rules sharpen the behavioral layer:
+Four auto-loading rules sharpen the behavioral layer:
 - `efficiency.md` — a decision tree that runs before every tool call
 - `memory-first.md` — read the playbook first, always; write corrections immediately
-- `verification.md` — no "done" without evidence; two-strike rule for broken approaches
+- `verification.md` — no "done" without evidence; includes the **two-strike rule**: if the same fix approach fails twice, the approach is wrong — try something fundamentally different
+- `scope.md` — change only what the request names; out-of-scope observations route to the playbook feedback log instead of silently expanding the diff
 
 ## Make it yours
 

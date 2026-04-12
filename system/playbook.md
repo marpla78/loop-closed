@@ -55,6 +55,7 @@
 - 2026-01-08: Don't suggest library X — this project uses library Y, they serve different use cases and aren't interchangeable. Rule: read the imports before recommending dependencies.
 - 2026-01-15: The "one question at a time" approach worked well in the planning session — keep doing this for complex decisions, it prevents overwhelm.
 - [date]: The AI read the "push harder" rule, acknowledged it, and still produced a conservative plan. Rule isn't the problem — execution is. Fix: bold version must be drafted FIRST, before any output. "Push harder" is a pre-output filter, not a post-hoc correction. If the human has to say "did you play safe?" — that's a miss.
+- [date]: Added scope.md as the 4th rule — surgical change discipline from reviewing Karpathy's CLAUDE.md template. loop-closed-native move: out-of-scope observations route to the playbook feedback log instead of expanding the diff. Also promoted two-strike rule to a named, discoverable concept in the README.
 
 ---
 

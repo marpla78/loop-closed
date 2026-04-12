@@ -114,3 +114,9 @@ Our shared workspace: ~/.claude/[your-system]/
 Playbook (shared brain): ~/.claude/[your-system]/playbook.md
 Rule files: keep them few. Each rule should earn its place. Adding one means
 reviewing whether an existing one can be absorbed or removed.
+
+Auto-loaded rules (all four should be in your rules/ directory):
+- `efficiency.md` — decision tree before every tool call
+- `memory-first.md` — read the playbook first; write corrections immediately
+- `verification.md` — sandbag gate + evidence gate + two-strike rule
+- `scope.md` — change only what the request names; route observations, don't implement them
