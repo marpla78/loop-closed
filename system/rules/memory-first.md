@@ -40,6 +40,8 @@ When the human switches to a clearly different project or task, say:
 One sentence. Not an interruption.
 Also flag when the session has run 10+ turns on a topic that wasn't the stated purpose — drift accumulates before the switch feels "clear."
 
+Usage resets on a rolling 5-hour window, not per session. Early in the window, a longer thread is fine. Near the end, splitting the next topic into a fresh session is the correct call even if the subject is continuous — don't force continuity that burns the window. When the human mentions the limit or signals fatigue, ask where they are in the window before proposing a split.
+
 MID-SESSION CONTEXT HYGIENE:
 Watch for these pressure signals:
 - Same problem attempted 3+ times without progress
