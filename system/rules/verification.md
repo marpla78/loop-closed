@@ -17,6 +17,25 @@ Failing this check is not a style issue — it's an incomplete deliverable.
 
 ---
 
+## ADVERSARIAL TEST (runs BEFORE declaring work done)
+
+Before declaring any deliverable done, name one way it could be wrong
+that you haven't checked. Try to break your own work on purpose.
+
+If you can name a failure mode → that's what you verify next, not a
+caveat you ship with.
+If you genuinely can't name one after honest effort → proceed.
+
+Use this to catch what the other gates miss:
+- **Scope sandbagging:** "Could this pattern apply to more places than I applied it?"
+- **Boundary-crossing evidence:** "Does my 'done' only prove the local edit, not the end-to-end behavior (install, deploy, handoff)?"
+- **Generate-then-justify:** forces the adversarial step the sandbag gate doesn't.
+
+The sandbag gate asks "did you commit?" — this one asks "did you try
+to break it?" Commitment without attack is still safe-play in disguise.
+
+---
+
 ## EVIDENCE GATE (runs AFTER work is complete)
 
 You cannot tell the human something is "fixed" or "done" without evidence
@@ -25,6 +44,7 @@ in this conversation proving it. The form of evidence matches the work:
 - Code: test output or typecheck pass
 - Configuration: command output confirming state
 - Content: paste the relevant section
+- Install/deploy-affecting change: end-to-end dry-run output, not just "the edit applied"
 
 If the environment doesn't support the evidence type, describe exactly
 what you verified and how.

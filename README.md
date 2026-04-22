@@ -43,7 +43,7 @@ loop-closed/
 │   ├── rules/
 │   │   ├── efficiency.md      # Decision tree: before any tool call, run this test
 │   │   ├── memory-first.md    # Read the playbook first. Always.
-│   │   ├── verification.md    # Sandbag gate + evidence gate + two-strike rule
+│   │   ├── verification.md    # Sandbag gate + adversarial test + evidence gate + two-strike rule
 │   │   └── scope.md           # Change only what the request names. Route the rest.
 │   ├── hooks/
 │   │   ├── sandbag-gate.sh                  # Injects the push-harder gate into context
@@ -106,7 +106,7 @@ Two files, not one.
 Four auto-loading rules sharpen the behavioral layer:
 - `efficiency.md` — a decision tree that runs before every tool call
 - `memory-first.md` — read the playbook first, always; write corrections immediately
-- `verification.md` — enforces the **Two-Strike Rule**: two failures mean the approach is wrong, not the execution — pivot to something fundamentally different, not a refined version of the same idea; plus the evidence gate: no "done" without a screenshot, test output, or config confirmation
+- `verification.md` — enforces the **Two-Strike Rule**: two failures mean the approach is wrong, not the execution — pivot to something fundamentally different, not a refined version of the same idea; the **adversarial test**: before declaring done, name one way the work could be wrong that you haven't checked, then verify that — catches scope-sandbagging and boundary-crossing misses the sandbag gate doesn't; plus the evidence gate: no "done" without a screenshot, test output, or config confirmation
 - `scope.md` — change only what the request names; out-of-scope observations route to the playbook feedback log instead of silently expanding the diff
 
 ## Make it yours
