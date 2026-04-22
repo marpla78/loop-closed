@@ -101,7 +101,7 @@ Two files, not one.
 **Automation hooks** close the two places the loop leaks by default:
 
 - **Compaction doesn't drop context.** When Claude Code compacts the conversation, `pre-compact.sh` writes a small rescue anchor to disk. On the next user prompt, `user-prompt-submit-rehydrate.sh` injects it back into context via `UserPromptSubmit.additionalContext`. You pick up where you were instead of re-explaining. (PostCompact can't inject context — that's why the rehydration happens on the next prompt instead.)
-- **Session-end memories no longer require willpower.** When a session ends, an inline prompt hook (Claude Code v2.0.30+) reads the transcript and drafts up to 3 durable memories into `playbook-draft.md` — tagged `[PROCEDURAL]` / `[SEMANTIC]` / `[EPISODIC]`. Nothing is auto-promoted into the permanent playbook. On the next `SessionStart`, `session-start-promote.sh` surfaces the drafts and asks the human to keep the keepers. That one-minute review is the whole security argument: transcript content is untrusted, so only a human promotes it.
+- **Session-end memories no longer require willpower.** On `SessionEnd`, an inline prompt hook (Claude Code v2.0.30+) reads the transcript and drafts up to 3 durable memories into `playbook-draft.md` — tagged `[PROCEDURAL]` / `[SEMANTIC]` / `[EPISODIC]`. Nothing is auto-promoted into the permanent playbook. On the next `SessionStart` (startup/resume/clear only — not compact), `session-start-promote.sh` surfaces the drafts and asks the human to keep the keepers. That one-minute review is the whole security argument: transcript content is untrusted, so only a human promotes it.
 
 Four auto-loading rules sharpen the behavioral layer:
 - `efficiency.md` — a decision tree that runs before every tool call

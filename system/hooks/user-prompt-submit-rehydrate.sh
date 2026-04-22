@@ -6,6 +6,9 @@
 # and cannot add context. UserPromptSubmit CAN — it supports
 # hookSpecificOutput.additionalContext. Pairs with pre-compact.sh.
 #
+# State files are namespaced by session_id so concurrent sessions
+# (different worktrees / clients) don't consume each other's snapshots.
+#
 # Fires on every prompt; fast-exits when there is nothing to rehydrate.
 # Self-consuming: once the snapshot is injected it's renamed so the
 # next prompt doesn't keep replaying it.
@@ -13,10 +16,14 @@
 set -euo pipefail
 
 TARGET_DIR="$HOME/.claude/loop-closed"
-STATE_FILE="$TARGET_DIR/compact-state.md"
-SESSION_MARKER="$TARGET_DIR/.session-start"
 
-# Nothing to do if no snapshot exists.
+INPUT=$(cat 2>/dev/null || echo '{}')
+SESSION_ID=$(echo "$INPUT" | jq -r '.session_id // "default"' 2>/dev/null || echo default)
+
+STATE_FILE="$TARGET_DIR/compact-state.$SESSION_ID.md"
+SESSION_MARKER="$TARGET_DIR/.session-start.$SESSION_ID"
+
+# Nothing to do if no snapshot exists for this session.
 [ -f "$STATE_FILE" ] || exit 0
 
 # If the snapshot is older than this session's start marker, it was

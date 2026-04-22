@@ -77,25 +77,42 @@ done
 # Register hooks in settings.json
 # -----------------------------------------------------------------------------
 # Events:
-#   UserPromptSubmit → sandbag-gate.sh + user-prompt-submit-rehydrate.sh
-#   PreCompact       → pre-compact.sh
-#   SessionStart     → session-start-promote.sh
-#   Stop             → type:"prompt" inline — extracts draft memories
+#   UserPromptSubmit                   → sandbag-gate.sh + user-prompt-submit-rehydrate.sh
+#   PreCompact                         → pre-compact.sh
+#   SessionStart (startup|resume|clear) → session-start-promote.sh
+#   SessionEnd                         → type:"prompt" inline — extracts draft memories
 #
-# Idempotent: re-running install.sh dedups by command/prompt. Hooks owned
-# by other tools are preserved. Requires Claude Code v2.0.30+ for the
-# type:"prompt" Stop hook.
+# Why the SessionStart matcher excludes "compact": that source fires after
+# mid-session context compaction, and re-touching the .session-start marker
+# there would invalidate the timestamp guard pre-compact.sh relies on, silently
+# dropping the rescue anchor on every compaction.
+#
+# Why SessionEnd (not Stop) for the capture hook: Stop fires after every
+# assistant turn (it's "agent considers stopping"), which would re-run the
+# Haiku capture on every reply. SessionEnd is the once-per-session terminal
+# event.
+#
+# Idempotent: re-running install.sh preserves sibling hooks owned by other
+# tools (dedup filters at the inner hooks level, not the outer matcher entry).
+# The capture prompt dedups on a stable sentinel prefix so edits to the prompt
+# body don't leave the previous version alongside the new one.
+#
+# Requires Claude Code v2.0.30+ (type:"prompt" hook).
 
-CAPTURE_PROMPT='Read the conversation transcript at $TRANSCRIPT_PATH. Extract up to 3 durable memories worth saving from this session — things the next session would not figure out on its own.
+# Sentinel prefix makes dedup stable across future edits to the prompt body.
+# Bump the version (v1 → v2) intentionally if you want old + new to coexist.
+CAPTURE_SENTINEL='[loop-closed:capture-v1]'
 
-Tag each one:
-- [PROCEDURAL] for how-we-do-X rules (working patterns, corrections)
-- [SEMANTIC] for facts that stay true about the person, project, or stack
-- [EPISODIC] for what-happened-this-session events worth remembering
+CAPTURE_PROMPT="$CAPTURE_SENTINEL"' Read the conversation transcript at $TRANSCRIPT_PATH. Extract up to 3 durable memories worth saving from this session — things the next session would not figure out on its own.
+
+Tag each one at column 0 (no leading "-", "*", or indentation):
+[PROCEDURAL] for how-we-do-X rules (working patterns, corrections)
+[SEMANTIC] for facts that stay true about the person, project, or stack
+[EPISODIC] for what-happened-this-session events worth remembering
 
 Follow the conventions in ~/.claude/loop-closed/rules/memory-first.md.
 
-Append your entries to ~/.claude/loop-closed/playbook-draft.md under a new "## YYYY-MM-DD" date header (today'"'"'s date). One entry per line. If nothing durable happened, write nothing — silence is fine.
+Append your entries to ~/.claude/loop-closed/playbook-draft.md under a new "## YYYY-MM-DD" date header (today'"'"'s date). One entry per line, tag at column 0. If nothing durable happened, write nothing — silence is fine.
 
 Do NOT edit playbook.md. Drafts only. The human reviews and promotes keepers at the start of the next session.'
 
@@ -108,10 +125,12 @@ if [ ! -f "$SETTINGS_FILE" ]; then
   fi
 fi
 
-SANDBAG_CMD="bash $HOOKS_DIR/sandbag-gate.sh"
-REHYDRATE_CMD="bash $HOOKS_DIR/user-prompt-submit-rehydrate.sh"
-PRECOMPACT_CMD="bash $HOOKS_DIR/pre-compact.sh"
-SESSIONSTART_CMD="bash $HOOKS_DIR/session-start-promote.sh"
+# Single-quote the path inside the command so hook-runner shells don't word-split
+# on a $HOME that contains spaces (common for macOS GUI-created accounts).
+SANDBAG_CMD="bash '$HOOKS_DIR/sandbag-gate.sh'"
+REHYDRATE_CMD="bash '$HOOKS_DIR/user-prompt-submit-rehydrate.sh'"
+PRECOMPACT_CMD="bash '$HOOKS_DIR/pre-compact.sh'"
+SESSIONSTART_CMD="bash '$HOOKS_DIR/session-start-promote.sh'"
 
 build_settings() {
   jq \
@@ -120,9 +139,20 @@ build_settings() {
     --arg precompact_cmd "$PRECOMPACT_CMD" \
     --arg sessionstart_cmd "$SESSIONSTART_CMD" \
     --arg capture_prompt "$CAPTURE_PROMPT" \
+    --arg capture_sentinel "$CAPTURE_SENTINEL" \
 '
+# Filter by inner hook command/prompt, not by the outer matcher entry —
+# so a user who consolidated a custom hook into the same matcher block as
+# a loop-closed hook does not lose their custom one on re-install.
 def dedup(marker):
-  map(select(([(.hooks // [])[] | (.command // .prompt // "")] | any(. == marker)) | not));
+  map(.hooks = ((.hooks // []) | map(select((.command // .prompt // "") != marker))))
+  | map(select((.hooks | length) > 0));
+
+# Match by prefix — lets us evolve CAPTURE_PROMPT body while still replacing
+# the old registration on upgrade.
+def dedup_prefix(prefix):
+  map(.hooks = ((.hooks // []) | map(select(((.command // .prompt // "") | startswith(prefix)) | not))))
+  | map(select((.hooks | length) > 0));
 
 .hooks //= {} |
 .hooks.UserPromptSubmit = (
@@ -138,10 +168,10 @@ def dedup(marker):
 ) |
 .hooks.SessionStart = (
   ((.hooks.SessionStart // []) | dedup($sessionstart_cmd))
-  + [{matcher: "", hooks: [{type: "command", command: $sessionstart_cmd}]}]
+  + [{matcher: "startup|resume|clear", hooks: [{type: "command", command: $sessionstart_cmd}]}]
 ) |
-.hooks.Stop = (
-  ((.hooks.Stop // []) | dedup($capture_prompt))
+.hooks.SessionEnd = (
+  ((.hooks.SessionEnd // []) | dedup_prefix($capture_sentinel))
   + [{matcher: "", hooks: [{type: "prompt", prompt: $capture_prompt, model: "claude-haiku-4-5-20251001", timeout: 60}]}]
 )
 ' "$1"
@@ -160,9 +190,13 @@ if $DRY_RUN; then
 else
   cp "$SETTINGS_FILE" "${SETTINGS_FILE}.backup.$(date +%s)"
   MERGED=$(build_settings "$SETTINGS_FILE")
-  # Validate before writing
+  # Validate before writing.
   echo "$MERGED" | jq . >/dev/null
-  echo "$MERGED" > "$SETTINGS_FILE"
+  # Atomic write: rename(2) within the same directory is atomic on POSIX,
+  # so an interrupted install can't leave settings.json truncated.
+  TMP_OUT="${SETTINGS_FILE}.tmp.$$"
+  echo "$MERGED" > "$TMP_OUT"
+  mv "$TMP_OUT" "$SETTINGS_FILE"
 fi
 
-printf '\nDone.\n\nNext steps:\n  1. Edit the "About You" section: %s\n  2. Add your active projects: %s/playbook.md\n  3. Open /hooks in Claude Code once (or restart) so the hooks activate.\n  4. Start a session — it reads the playbook first.\n\nHooks registered:\n  • UserPromptSubmit → sandbag-gate.sh + user-prompt-submit-rehydrate.sh\n  • PreCompact       → pre-compact.sh (rescue anchor for compaction)\n  • SessionStart     → session-start-promote.sh (surfaces draft memories)\n  • Stop             → inline prompt hook (extracts draft memories — requires Claude Code v2.0.30+)\n\nDocs and examples: %s/\n' "$CLAUDE_MD" "$TARGET_DIR" "$SCRIPT_DIR"
+printf '\nDone.\n\nNext steps:\n  1. Edit the "About You" section: %s\n  2. Add your active projects: %s/playbook.md\n  3. Open /hooks in Claude Code once (or restart) so the hooks activate.\n  4. Start a session — it reads the playbook first.\n\nHooks registered:\n  • UserPromptSubmit                   → sandbag-gate.sh + user-prompt-submit-rehydrate.sh\n  • PreCompact                         → pre-compact.sh (rescue anchor)\n  • SessionStart (startup|resume|clear) → session-start-promote.sh (surfaces drafts)\n  • SessionEnd                         → inline prompt hook (extracts drafts — Claude Code v2.0.30+)\n\nDocs and examples: %s/\n' "$CLAUDE_MD" "$TARGET_DIR" "$SCRIPT_DIR"
