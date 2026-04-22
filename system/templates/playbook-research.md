@@ -102,3 +102,13 @@
 
 ### Key References
 - [Author, Year] — [Title] — [What it establishes for this project] — [Link or path]
+
+### Source of Truth
+*Which representation is canonical when the numbers or claims disagree. Fill this in once per project — the meta-decision that governs every hypothesis and reference above.*
+
+- **Dataset:** [raw source / cleaned file / published numbers — which is citable]
+- **Hypothesis registry:** [where Live Hypotheses actually live — this playbook, Notion, lab notebook, preregistration]
+- **Method:** [protocol doc / code notebook / published paper — which defines current procedure on disagreement]
+- **Canon owner:** [named person who settles what's authoritative — without an owner, the rule is a wish]
+
+*Filled example: Dataset: `data/cleaned/v3.csv` (provenance script in `scripts/clean.py`). Hypothesis registry: this playbook's Live Hypotheses section. Method: `methods/protocol-v2.md`. Canon owner: @pi.*

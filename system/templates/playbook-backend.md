@@ -99,3 +99,13 @@
 - **Route:** [e.g., `GET /v1/users/:id`] — **Consumers:** [list] — **Perf baseline:** [e.g., P95 < 80ms]
 - **Schema:** [e.g., `orders` table] — **Policy:** [e.g., additive-only until v2]
 - **Error format:** [e.g., RFC 7807 — `type`, `title`, `status`, `detail`]
+
+### Source of Truth
+*Which artifact wins when contract, code, and docs disagree. Fill this in once per project — the meta-decision that governs every Active Service Contract above.*
+
+- **API contract:** [OpenAPI spec / production behavior / generated clients — which is authoritative on disagreement]
+- **Schema:** [migration files / ORM model / production DB dump — which wins]
+- **Error taxonomy:** [where error types, codes, and shapes are canonically defined]
+- **Drift owner:** [named person or role who reconciles when they diverge — without an owner, the rule is a wish]
+
+*Filled example: API contract: `api/openapi.yaml` (generated clients consume it). Schema: migration files in `db/migrations/` authoritative; ORM models regenerated. Error taxonomy: `errors.ts`. Drift owner: @backend-lead.*

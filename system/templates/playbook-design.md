@@ -109,3 +109,5 @@
 - **Components:** [Figma / Storybook / production code — which is authoritative]
 - **Copy:** [Figma text / CMS / locale file — which wins]
 - **Drift owner:** [named person or role who fixes mismatches — without an owner, the rule is a wish]
+
+*Filled example: Tokens: Figma variables (authoritative) → `design-tokens.json` via Style Dictionary on merge. Components: production React; Storybook mirrors. Copy: Lokalise canonical; Figma text illustrative. Drift owner: @jordan-lee.*
