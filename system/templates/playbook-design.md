@@ -99,3 +99,11 @@
 - **Color token source:** [e.g., `design-tokens.json` in repo root — set yours]
 - **Spacing unit:** [e.g., 4px base — set yours]
 - **Accessibility baseline:** WCAG 2.1 AA; interactive targets ≥ 44px
+
+### Source of Truth
+*Which system wins when two representations disagree. Fill this in once per project — the meta-decision that governs every other entry above.*
+
+- **Tokens:** [where truth lives] → [how it syncs, e.g., Figma variables → `design-tokens.json` on PR]
+- **Components:** [Figma / Storybook / production code — which is authoritative]
+- **Copy:** [Figma text / CMS / locale file — which wins]
+- **Drift owner:** [named person or role who fixes mismatches — without an owner, the rule is a wish]
