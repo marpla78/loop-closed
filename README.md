@@ -46,7 +46,7 @@ loop-closed/
 │   │   ├── verification.md    # Sandbag gate + adversarial test + evidence gate + two-strike rule
 │   │   └── scope.md           # Change only what the request names. Route the rest.
 │   ├── hooks/
-│   │   ├── sandbag-gate.sh                  # Injects the push-harder gate into context
+│   │   ├── sandbag-gate.sh                  # Injects sandbag gate + adversarial test into context
 │   │   ├── pre-compact.sh                   # Writes a rescue anchor before compaction
 │   │   ├── user-prompt-submit-rehydrate.sh  # Re-injects the anchor on the next turn
 │   │   └── session-start-promote.sh         # Surfaces last session's draft memories
@@ -102,7 +102,7 @@ Two files, not one.
 
 **The shared playbook** (`system/playbook.md`) holds experiential memory — what's active, what happened last session, what corrections have been made. The AI reads it first. You both maintain it. After 10 sessions, the feedback log starts doing work you can feel.
 
-**The sandbag gate** (`system/hooks/sandbag-gate.sh`) is the enforcement layer. Text-based rules that say "be bold" compete with trained defaults and lose — the AI reads the rule, acknowledges it, and still produces conservative output. The hook runs *outside* the generation loop and injects the gate check into context on every user message. It's the only layer where this can actually be enforced, not just documented. Without it, you're running the system with its most important structural piece missing.
+**The verification hook** (`system/hooks/sandbag-gate.sh` — filename kept for install-compatibility) is the enforcement layer. Text-based rules that say "be bold" or "adversarially test your work" compete with trained defaults and lose — the AI reads the rule, acknowledges it, and still produces conservative or under-verified output. The hook runs *outside* the generation loop and injects two gate checks into context on every user message: the **sandbag gate** (commit to the decision, strip hedging language) and the **adversarial test** (before declaring done, name one way it could be wrong that you haven't checked, then verify that instead of shipping with a caveat). It's the only layer where both can be structurally enforced, not just documented. Without it, you're running the system with its most important enforcement mechanism missing — the evidence gate remains a text-only rule that the human audit has to backstop.
 
 **Automation hooks** close the two places the loop leaks by default:
 
