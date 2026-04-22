@@ -40,6 +40,8 @@
 
 > **[PROCEDURAL]** — how to work (always relevant). **[SEMANTIC]** — domain facts (stack, conventions). **[EPISODIC]** — dated events (incidents, one-off decisions). If unsure, tag [PROCEDURAL].
 
+> **Security note:** Entries persist and load as high-authority context. Review `playbook-draft.md` before promoting (draft captures come from untrusted transcript content). Never store secrets here. Full threat model: `docs/security.md` in the loop-closed repo.
+
 ### [PROCEDURAL]
 - 2026-03-10: Delivered layout as "done" without checking 375px — nav had overflow. Rule: Design QA checklist runs before every handoff, no exceptions.
 

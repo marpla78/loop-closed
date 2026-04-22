@@ -52,7 +52,12 @@
 > Three kinds of memory live here. Tag new entries so the right ones load at the right time:
 > **[PROCEDURAL]** — how to work (workflow rules, always relevant). **[SEMANTIC]** — what's true about this project (domain facts: stack, conventions, architecture). **[EPISODIC]** — specific dated events (incidents, debugging sessions, one-off decisions). If unsure, tag [PROCEDURAL].
 
-> **Security note:** Entries in this log persist across sessions and load as high-authority context. Review draft captures in `playbook-draft.md` before promoting. Full threat model: [docs/security.md](../docs/security.md). Related human-maintained log: [templates/pr-feedback.md](templates/pr-feedback.md).
+> **Security note:** Entries in this log persist across sessions and load as high-authority context. Three rules that follow from that:
+> 1. Review `playbook-draft.md` before promoting entries — draft captures come from transcript content, which is untrusted by default.
+> 2. Never put secrets (API keys, credentials, client names) in this file — anything written here is loaded into the system prompt every session.
+> 3. On projects that read untrusted third-party code, review the draft with extra care.
+>
+> Full threat model and attribution: `docs/security.md` in the loop-closed repo. Related human-maintained log: [templates/pr-feedback.md](templates/pr-feedback.md).
 
 ### [PROCEDURAL] — How to work on this project
 
