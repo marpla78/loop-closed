@@ -46,8 +46,12 @@ loop-closed/
 │   │   ├── verification.md    # Sandbag gate + evidence gate + two-strike rule
 │   │   └── scope.md           # Change only what the request names. Route the rest.
 │   ├── hooks/
-│   │   └── sandbag-gate.sh    # The enforcement layer — injects the gate into context
+│   │   ├── sandbag-gate.sh                  # Injects the push-harder gate into context
+│   │   ├── pre-compact.sh                   # Writes a rescue anchor before compaction
+│   │   ├── user-prompt-submit-rehydrate.sh  # Re-injects the anchor on the next turn
+│   │   └── session-start-promote.sh         # Surfaces last session's draft memories
 │   ├── playbook.md            # The shared brain — projects, sessions, feedback log
+│   ├── playbook-draft.md      # Staging area for auto-captured memories (human promotes)
 │   └── templates/
 │       ├── spec-full.md       # For work taking >30 minutes
 │       ├── spec-micro.md      # 30 seconds to fill in, prevents 30 minutes of rework
@@ -94,6 +98,11 @@ Two files, not one.
 
 **The sandbag gate** (`system/hooks/sandbag-gate.sh`) is the enforcement layer. Text-based rules that say "be bold" compete with trained defaults and lose — the AI reads the rule, acknowledges it, and still produces conservative output. The hook runs *outside* the generation loop and injects the gate check into context on every user message. It's the only layer where this can actually be enforced, not just documented. Without it, you're running the system with its most important structural piece missing.
 
+**Automation hooks** close the two places the loop leaks by default:
+
+- **Compaction doesn't drop context.** When Claude Code compacts the conversation, `pre-compact.sh` writes a small rescue anchor to disk. On the next user prompt, `user-prompt-submit-rehydrate.sh` injects it back into context via `UserPromptSubmit.additionalContext`. You pick up where you were instead of re-explaining. (PostCompact can't inject context — that's why the rehydration happens on the next prompt instead.)
+- **Session-end memories no longer require willpower.** When a session ends, an inline prompt hook (Claude Code v2.0.30+) reads the transcript and drafts up to 3 durable memories into `playbook-draft.md` — tagged `[PROCEDURAL]` / `[SEMANTIC]` / `[EPISODIC]`. Nothing is auto-promoted into the permanent playbook. On the next `SessionStart`, `session-start-promote.sh` surfaces the drafts and asks the human to keep the keepers. That one-minute review is the whole security argument: transcript content is untrusted, so only a human promotes it.
+
 Four auto-loading rules sharpen the behavioral layer:
 - `efficiency.md` — a decision tree that runs before every tool call
 - `memory-first.md` — read the playbook first, always; write corrections immediately
@@ -124,6 +133,9 @@ No. The auto-loading rules mechanism is Claude Code-specific. The concepts trave
 
 **What happens when Claude Code updates?**
 The rules might drift. Check monthly — a quick read usually reveals one or two things that need adjusting.
+
+**Do I need a specific Claude Code version?**
+The core rules + sandbag gate work anywhere. The auto-capture hook (inline prompt hook on session end) requires Claude Code v2.0.30 or newer. Everything else works on older versions.
 
 **Is this maintained?**
 Best-effort. It's a starting point, not a service. Fork it and make it yours.
