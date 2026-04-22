@@ -49,13 +49,28 @@
 
 *Every correction becomes a permanent rule. Every confirmation of a good approach gets recorded too.*
 
-> Replace these with your actual feedback entries. Corrections AND confirmations both belong here.
+> Three kinds of memory live here. Tag new entries so the right ones load at the right time:
+> **[PROCEDURAL]** — how to work (workflow rules, always relevant). **[SEMANTIC]** — what's true about this project (domain facts: stack, conventions, architecture). **[EPISODIC]** — specific dated events (incidents, debugging sessions, one-off decisions). If unsure, tag [PROCEDURAL].
+
+### [PROCEDURAL] — How to work on this project
+
+*Workflow rules. Always loaded. Keep these tight — each one earns its place.*
 
 - 2026-01-01: Always run typecheck before saying something is done — caught 3 silent failures in a row. Rule: verification requires evidence, not confidence.
-- 2026-01-08: Don't suggest library X — this project uses library Y, they serve different use cases and aren't interchangeable. Rule: read the imports before recommending dependencies.
 - 2026-01-15: The "one question at a time" approach worked well in the planning session — keep doing this for complex decisions, it prevents overwhelm.
 - [date]: The AI read the "push harder" rule, acknowledged it, and still produced a conservative plan. Rule isn't the problem — execution is. Fix: bold version must be drafted FIRST, before any output. "Push harder" is a pre-output filter, not a post-hoc correction. If the human has to say "did you play safe?" — that's a miss.
-- [date]: Added scope.md as the 4th rule — surgical change discipline from reviewing Karpathy's CLAUDE.md template. loop-closed-native move: out-of-scope observations route to the playbook feedback log instead of expanding the diff. Also promoted two-strike rule to a named, discoverable concept in the README.
+
+### [SEMANTIC] — What is true about this project
+
+*Domain facts: stack choices, architectural constraints, naming conventions, load-bearing decisions. These rarely change.*
+
+- 2026-01-08: Don't suggest library X — this project uses library Y, they serve different use cases and aren't interchangeable. Rule: read the imports before recommending dependencies.
+
+### [EPISODIC] — Specific past events
+
+*Dated incidents and one-off decisions. Useful for "have we seen this before?" — archived after 90 days (see Playbook Hygiene in memory-first.md).*
+
+- [date]: Added scope.md as the 4th rule — surgical change discipline from reviewing a lean CLAUDE.md template. loop-closed-native move: out-of-scope observations route to the playbook feedback log instead of expanding the diff. Also promoted two-strike rule to a named, discoverable concept in the README.
 
 ---
 

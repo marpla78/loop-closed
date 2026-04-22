@@ -57,3 +57,25 @@ When you notice any signal: STOP.
 If a session is getting long after a major chunk completes:
 "Good stopping point — want to capture state before we continue?"
 One sentence. Not an interruption.
+
+PLAYBOOK HYGIENE:
+The playbook earns its keep by staying readable. A bloated playbook is a dead
+one — too long to re-read, too noisy to trust. Three rules keep it lean.
+
+1. Soft cap: ~2,000 tokens / ~150 lines for the active playbook.
+   The Feedback Log is where bloat accumulates. Active Projects, Last Session,
+   and Checklists have natural limits; feedback grows unbounded unless pruned.
+
+2. Archiving rule: episodic entries older than 90 days move to
+   `playbook-archive.md`. Procedural and semantic entries are always kept —
+   they're what the playbook is for. Only [EPISODIC] entries age out.
+
+3. Session-end check: if the playbook is over the cap, surface it.
+   "Playbook is at [X] lines — want to archive the oldest episodic entries
+   before we close out?" One sentence. Do not prune procedural or semantic
+   entries without explicit approval — they look redundant until the day
+   they save a debugging session.
+
+Cognitive-science standard: procedural (how), semantic (what's true),
+episodic (what happened). The split is standard, not novel — tagging it
+just makes the archiving decision mechanical instead of a judgment call.
