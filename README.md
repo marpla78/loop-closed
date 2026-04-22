@@ -53,10 +53,15 @@ loop-closed/
 │   ├── playbook.md            # The shared brain — projects, sessions, feedback log
 │   ├── playbook-draft.md      # Staging area for auto-captured memories (human promotes)
 │   └── templates/
-│       ├── spec-full.md       # For work taking >30 minutes
-│       ├── spec-micro.md      # 30 seconds to fill in, prevents 30 minutes of rework
-│       ├── session-log.md     # What happened, what's unresolved, next session goals
-│       └── design-project.md  # For visual/UI work with a brand context
+│       ├── spec-full.md         # For work taking >30 minutes
+│       ├── spec-micro.md        # 30 seconds to fill in, prevents 30 minutes of rework
+│       ├── session-log.md       # What happened, what's unresolved, next session goals
+│       ├── session-checkpoint.md # Mid-task handoff — paste into next session's opener
+│       ├── pr-feedback.md       # Human-maintained log for durable review patterns
+│       ├── design-project.md    # For visual/UI work with a brand context
+│       ├── playbook-design.md   # Drop-in variant for visual/UI work (adds Source of Truth)
+│       ├── playbook-backend.md  # Drop-in variant for APIs, services, schemas
+│       └── playbook-research.md # Drop-in variant for hypotheses, experiments, findings
 ├── examples/
 │   ├── playbook-filled.md     # What the playbook looks like after 1 month of real use
 │   ├── session-before-after.md # Cold session vs warm session — specific, not abstract
@@ -66,6 +71,7 @@ loop-closed/
 │   └── DESIGN.md              # Color, type, visual identity decisions
 ├── docs/
 │   ├── philosophy.md          # The thinking behind the system
+│   ├── security.md            # Threat model: CLAUDE.md as prompt-injection surface
 │   └── blog-post-draft.md     # The companion post
 └── install.sh                 # 10-minute setup — backs up your existing CLAUDE.md
 ```
