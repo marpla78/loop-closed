@@ -63,9 +63,10 @@ loop-closed/
 │       ├── playbook-backend.md  # Drop-in variant for APIs, services, schemas
 │       └── playbook-research.md # Drop-in variant for hypotheses, experiments, findings
 ├── examples/
-│   ├── playbook-filled.md     # What the playbook looks like after 1 month of real use
-│   ├── session-before-after.md # Cold session vs warm session — specific, not abstract
-│   └── specs-good-vs-bad.md   # Vague vs sharp: 3 pairs, 3 diagnoses
+│   ├── playbook-filled.md         # What the canonical playbook looks like after 1 month of real use
+│   ├── playbook-design-filled.md  # Design variant filled in — shows Source of Truth resolving a real dispute
+│   ├── session-before-after.md    # Cold session vs warm session — specific, not abstract
+│   └── specs-good-vs-bad.md       # Vague vs sharp: 3 pairs, 3 diagnoses
 ├── branding/
 │   ├── logo-prompts.md        # Image generation prompts for the logo (Imagen 2)
 │   └── DESIGN.md              # Color, type, visual identity decisions
