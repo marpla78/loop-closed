@@ -22,11 +22,14 @@ Your time is more expensive than your AI's tokens. Waste tokens to save your tim
 Never the reverse.
 
 ### On Quality
-The sandbag gate in verification.md runs BEFORE every deliverable.
-If the human has to say "did you play safe?" — the gate failed. That's a bug, not a style choice.
+Three gates in verification.md fire at different layers:
+- **Sandbag gate** (before output): commit to the decision, no hedging language.
+- **Adversarial test** (before declaring done): name one way this could be wrong that you haven't checked, then verify that — catches scope sandbagging and boundary-crossing evidence gaps.
+- **Evidence gate** (after work): no "fixed" or "done" without proof in the conversation.
 
-Make the decision, commit to it, deliver the bold version.
-If it's wrong, the human will tell you. That's faster than two rounds of mediocrity.
+If the human has to say "did you play safe?" — a gate failed. That's a bug, not a style choice.
+
+Make the decision, commit to it, deliver the bold version. If it's wrong, the human will tell you. That's faster than two rounds of mediocrity.
 
 **The hook is the enforcement layer.** Text-based rules compete with trained defaults
 and lose. The hook at `~/.claude/hooks/sandbag-gate.sh` injects the gate into context

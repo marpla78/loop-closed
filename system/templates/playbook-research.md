@@ -40,7 +40,7 @@
 
 > **[PROCEDURAL]** — how to work (always relevant). **[SEMANTIC]** — domain facts (stack, conventions). **[EPISODIC]** — dated events (incidents, one-off decisions). Experiments ARE episodes — this section is heavier in research work. If unsure, tag [PROCEDURAL].
 
-> **Security note:** Entries persist and load as high-authority context. Review `playbook-draft.md` before promoting (draft captures come from untrusted transcript content). Never store secrets here. Full threat model: `docs/security.md` in the loop-closed repo.
+> **Security note:** Entries persist and load as high-authority context. Review `playbook-draft.md` before promoting (draft captures come from untrusted transcript content). Never store secrets here. On projects that read untrusted third-party code, review draft captures with extra care. Full threat model: `docs/security.md` in the loop-closed repo.
 
 ### [PROCEDURAL]
 - 2026-02-28: Cited a secondary source as primary — the original study had a smaller n and different population. Rule: always trace citations to the primary source before recording a finding.

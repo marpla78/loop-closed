@@ -156,3 +156,12 @@ See `~/.claude/[your-system]/templates/session-log.md`
 - **Rules location:** ~/.claude/[your-system]/rules/
 - **To undo any system change:** keep snapshots before major changes
 - **Max rule files:** keep them few — each should earn its place
+
+### Source of Truth
+*Which representation wins when two disagree. Generic version — domain variants have sharper flavors. Fill this in once per project.*
+
+- **Artifact 1:** [e.g., code / design / spec doc — which is authoritative]
+- **Artifact 2:** [the other representation — where it lives, how it syncs]
+- **Drift owner:** [named person or role who reconciles disagreement — without an owner, the rule is a wish]
+
+*Filled example: Artifact 1: production code (`src/billing.ts`). Artifact 2: spec doc (`docs/billing-spec.md`) — regenerated from code comments on release. Drift owner: @platform-lead.*
