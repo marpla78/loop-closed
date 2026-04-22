@@ -1,5 +1,7 @@
 # Shared Playbook — Design
-<!-- To use: cp system/templates/playbook-design.md system/playbook.md -->
+<!-- Pick this variant if your primary output is visual: UI, components, brand, design systems. -->
+<!-- To use (from repo clone):  cp system/templates/playbook-design.md system/playbook.md -->
+<!-- To use (after install.sh):  cp ~/.claude/loop-closed/templates/playbook-design.md ~/.claude/loop-closed/playbook.md -->
 
 *Shared brain for design work. Both of you maintain it.*
 
@@ -15,9 +17,20 @@
 
 ## Last Session
 
-**Date:** [fill in] **Project:** [which project]
+**Date:** [fill in]
+**Project:** [which project]
 
-**Accomplished:** - **Unresolved:** - **Decisions:** - **Next:** 1.
+**Accomplished:**
+-
+
+**Unresolved:**
+-
+
+**Decisions:**
+-
+
+**Next session goals:**
+1.
 
 ---
 
@@ -67,8 +80,7 @@
 - [ ] Update Active Style Decisions if anything changed
 
 ### Retro
-- [ ] What went well? What went poorly? Any 2+ patterns → candidate rule?
-- [ ] Propose system updates. Snapshot before applying.
+- [ ] Keep / Stop / New rule? Snapshot before applying.
 
 ---
 

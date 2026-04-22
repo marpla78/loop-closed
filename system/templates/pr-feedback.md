@@ -1,6 +1,6 @@
 # PR Feedback Log
-> One entry per review comment that revealed a durable pattern.
-> Check this file before touching any file that was recently in a PR review.
+> Human-maintained log. One entry per review comment that revealed a durable pattern.
+> Nothing auto-loads this — reference it from `playbook.md` or `CLAUDE.md`, or point the AI at this file when touching code that was recently in review.
 
 ## Entry template
 - **Date:**

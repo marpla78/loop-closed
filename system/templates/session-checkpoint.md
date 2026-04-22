@@ -1,5 +1,5 @@
 # Session Checkpoint
-> Fill this when ending a session mid-task. Load on next session start.
+> Fill this when ending a session mid-task. Nothing loads it automatically — paste the contents into your next session's opening message, or tell the AI to read this file path.
 
 ## Current branch (what I'm working on)
 One line. The active task, not the project.

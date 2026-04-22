@@ -52,6 +52,8 @@
 > Three kinds of memory live here. Tag new entries so the right ones load at the right time:
 > **[PROCEDURAL]** — how to work (workflow rules, always relevant). **[SEMANTIC]** — what's true about this project (domain facts: stack, conventions, architecture). **[EPISODIC]** — specific dated events (incidents, debugging sessions, one-off decisions). If unsure, tag [PROCEDURAL].
 
+> **Security note:** Entries in this log persist across sessions and load as high-authority context. Review draft captures in `playbook-draft.md` before promoting. Full threat model: [docs/security.md](../docs/security.md). Related human-maintained log: [templates/pr-feedback.md](templates/pr-feedback.md).
+
 ### [PROCEDURAL] — How to work on this project
 
 *Workflow rules. Always loaded. Keep these tight — each one earns its place.*

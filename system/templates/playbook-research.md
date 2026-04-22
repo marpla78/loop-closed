@@ -1,5 +1,7 @@
 # Shared Playbook — Research
-<!-- To use: cp system/templates/playbook-research.md system/playbook.md -->
+<!-- Pick this variant if your primary output is hypotheses, experiments, findings, or literature syntheses. -->
+<!-- To use (from repo clone):  cp system/templates/playbook-research.md system/playbook.md -->
+<!-- To use (after install.sh):  cp ~/.claude/loop-closed/templates/playbook-research.md ~/.claude/loop-closed/playbook.md -->
 
 *Shared brain for research work. Both of you maintain it.*
 
@@ -15,9 +17,20 @@
 
 ## Last Session
 
-**Date:** [fill in] **Project:** [which project]
+**Date:** [fill in]
+**Project:** [which project]
 
-**Accomplished:** - **Unresolved:** - **Decisions:** - **Next:** 1.
+**Accomplished:**
+-
+
+**Unresolved:**
+-
+
+**Decisions:**
+-
+
+**Next session goals:**
+1.
 
 ---
 
@@ -31,7 +44,7 @@
 - 2026-02-28: Cited a secondary source as primary — the original study had a smaller n and different population. Rule: always trace citations to the primary source before recording a finding.
 
 ### [SEMANTIC]
-- 2026-01-20: The domain distinguishes "engagement" (clicks, time-on-page) from "comprehension" (recall, transfer). They measure different constructs and often diverge. Rule: name the exact construct being measured in every hypothesis.
+- 2026-01-20: The domain distinguishes "engagement" (clicks, time-on-page) from "comprehension" (recall, transfer). They measure different constructs and often diverge. Rule: name the exact construct being measured in every hypothesis. *(Example shown assumes UX research — replace with your domain's core distinctions.)*
 
 ### [EPISODIC]
 - 2026-03-15: 6-participant usability test on v3. Key finding: users expected inline validation, not end-of-form errors. Error recovery time dropped 60% after fix. Notes: `/research/sessions/2026-03-15.md`.
@@ -67,8 +80,7 @@
 - [ ] Update Key References if new anchor sources used
 
 ### Retro
-- [ ] What went well? What went poorly? Any 2+ patterns → candidate rule?
-- [ ] Propose system updates. Snapshot before applying.
+- [ ] Keep / Stop / New rule? Snapshot before applying.
 
 ---
 
